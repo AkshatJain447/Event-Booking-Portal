@@ -1,7 +1,33 @@
 import { CiSearch } from "react-icons/ci";
 import { motion } from "framer-motion";
+import { useContext, useRef } from "react";
+import { HotelSearch } from "../../store/store";
+import { Link } from "react-router-dom";
 
 const Social = () => {
+  const { setSearchQuery, setLoading } = useContext(HotelSearch);
+  const locationRef = useRef(null);
+  const checkInRef = useRef(null);
+  const checkOutRef = useRef(null);
+  const roomsRef = useRef(null);
+  const personRef = useRef(null);
+
+  const handleSearch = () => {
+    setLoading(true);
+    const location = locationRef.current.value;
+    const checkIn = checkInRef.current.value;
+    const checkOut = checkOutRef.current.value;
+    const rooms = roomsRef.current.value;
+    const person = personRef.current.value;
+    setSearchQuery({ location, checkIn, checkOut, rooms, person });
+
+    locationRef.current.value = "";
+    checkInRef.current.value = "";
+    checkOutRef.current.value = "";
+    roomsRef.current.value = "";
+    personRef.current.value = "";
+  };
+
   return (
     <div>
       <form className="flex w-fit m-auto p-3">
@@ -10,6 +36,7 @@ const Social = () => {
             Select Location
           </label>
           <input
+            ref={locationRef}
             type="text"
             name="location"
             placeholder="Ex.Gurugram"
@@ -21,6 +48,7 @@ const Social = () => {
             Check In Date
           </label>
           <input
+            ref={checkInRef}
             type="date"
             name="checkIn"
             className="border-y border-black p-4 font-bold text-lg h-16"
@@ -31,6 +59,7 @@ const Social = () => {
             Check Out Date
           </label>
           <input
+            ref={checkOutRef}
             type="date"
             name="checkOut"
             className="border border-black p-4 font-bold text-lg h-16"
@@ -41,6 +70,7 @@ const Social = () => {
             Halls
           </label>
           <input
+            ref={roomsRef}
             type="number"
             name="rooms"
             placeholder="0"
@@ -52,6 +82,7 @@ const Social = () => {
             Guests
           </label>
           <input
+            ref={personRef}
             type="number"
             name="guests"
             placeholder="0"
@@ -59,15 +90,18 @@ const Social = () => {
           />
         </div>
       </form>
-      <motion.button
-        initial={{ scale: 1.1, translateY: "24px" }}
-        animate={{ scale: 1, translateY: "20px" }}
-        whileTap={{ scale: 0.9 }}
-        className="m-auto -mt-6 font-semibold text-2xl flex items-center gap-1 bg-gradient-to-r from-accent1 to-accent2 pl-6 pr-8 py-1 rounded-full text-white "
-      >
-        <CiSearch />
-        Search
-      </motion.button>
+      <Link to={"/search"}>
+        <motion.button
+          initial={{ scale: 1.1, translateY: "24px" }}
+          animate={{ scale: 1, translateY: "20px" }}
+          whileTap={{ scale: 0.9 }}
+          className="m-auto -mt-6 font-semibold text-2xl flex items-center gap-1 bg-gradient-to-r from-accent1 to-accent2 pl-6 pr-8 py-1 rounded-full text-white "
+          onClick={handleSearch}
+        >
+          <CiSearch />
+          Search
+        </motion.button>
+      </Link>
     </div>
   );
 };

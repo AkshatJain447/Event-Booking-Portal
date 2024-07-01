@@ -13,7 +13,7 @@ const Footer = () => {
 
   return (
     <motion.footer
-      className="bg-white text-primaryText py-8"
+      className="bg-white text-primaryText py-5"
       ref={footerRef}
       variants={{
         hidden: { opacity: 0, scale: 0.8 },
