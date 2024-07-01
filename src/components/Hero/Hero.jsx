@@ -10,7 +10,7 @@ import Corporate from "../Categories/Corporate";
 import Social from "../Categories/Social";
 import Private from "../Categories/Private";
 import Leisure from "../Categories/Leisure";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const categories = [
@@ -55,36 +55,44 @@ const componentMapping = {
 };
 
 const Container = ({ children }) => {
-  return <div className="-mt-3">{children}</div>;
+  return <div className="md:-mt-3">{children}</div>;
 };
 
 const Hero = () => {
   const [active, setActive] = useState("Weddings");
+  const [windowWidth, setWindowWidth] = useState();
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+  }, [window.innerWidth]);
   const ActiveComponent = componentMapping[active];
 
   return (
-    <div className="mt-10 ">
+    <div className="md:mt-10 ">
       <motion.div
         className="bg-white w-fit m-auto rounded-lg"
         initial={{ opacity: 0, translateY: 130 }}
         animate={{ opacity: 1, translateY: 35 }}
         transition={{ duration: 0.5, ease: "backOut" }}
       >
-        <ul className=" -translate-y-10 flex justify-evenly items-center gap-10 bg-white text-primaryText p-2 rounded-lg w-fit m-auto px-8 cursor-pointer shadow-md">
-          {categories.map((type) => (
-            <li
-              key={type.id}
-              className={`flex flex-col items-center w-24 text-center pb-2 duration-50 ${
-                active === type.component && "border-b-2 border-accent3"
-              }`}
-              onClick={() => setActive(type.component)}
-            >
-              <img src={type.icon} alt="icon" className="h-12" />
-              <h4 className="text-sm">{type.title}</h4>
-            </li>
-          ))}
-        </ul>
-        <h3 className="font-semibold text-accent3 italic w-fit m-auto text-lg -translate-y-6">
+        {windowWidth > 750 ? (
+          <ul className=" -translate-y-10 flex justify-evenly items-center gap-10 bg-white text-primaryText p-2 rounded-lg w-fit m-auto px-8 cursor-pointer shadow-md">
+            {categories.map((type) => (
+              <li
+                key={type.id}
+                className={`flex flex-col items-center w-24 text-center pb-2 duration-50 ${
+                  active === type.component && "border-b-2 border-accent3"
+                }`}
+                onClick={() => setActive(type.component)}
+              >
+                <img src={type.icon} alt="icon" className="h-12" />
+                <h4 className="text-sm">{type.title}</h4>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          ""
+        )}
+        <h3 className="font-semibold text-accent3 italic w-fit m-auto text-lg text-center md:-translate-y-6">
           Your Event, Your Way - Discover, Choose, and Book the Best Venues and
           Hotels
         </h3>

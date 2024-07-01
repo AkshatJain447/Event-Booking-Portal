@@ -13,7 +13,7 @@ const Footer = () => {
 
   return (
     <motion.footer
-      className="bg-white text-primaryText py-5"
+      className="bg-white text-primaryText py-5 text-center"
       ref={footerRef}
       variants={{
         hidden: { opacity: 0, scale: 0.8 },
@@ -57,7 +57,7 @@ const Footer = () => {
           </div>
           <div className="mb-4">
             <h3 className="text-xl font-bold mb-2">Follow Us</h3>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 justify-center">
               <span
                 className=" hover:cursor-pointer border p-1 rounded-md hover:text-gray-700 dark:hover:text-gray-500 shadow-md hover:border-gray-600"
                 onClick={() =>

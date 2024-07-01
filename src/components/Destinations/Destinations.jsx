@@ -111,7 +111,7 @@ const Modal = ({ dest, setIsOpen }) => {
         backgroundImage: `url(${dest.img})`,
         backgroundSize: "cover",
       }}
-      className="fixed top-[20%] left-1/4 -translate-x-1/4 -translate-y-[20%] shadow-md drop-shadow-lg h-[450px] w-[800px] flex flex-col justify-end rounded-md duration-150 z-20"
+      className="fixed top-[10%] lg:top-[20%] left-20 lg:left-1/4 -translate-x-1/4 -translate-y-[10%] lg:-translate-y-[20%] shadow-md drop-shadow-lg h-[350px] w-[600px] lg:h-[450px] lg:w-[800px] flex flex-col justify-end rounded-md duration-150 z-20"
       initial={{ opacity: 0, scale: 0.5 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{
@@ -142,6 +142,11 @@ const Destinations = () => {
   const isCardInView = useInView(containerRef, { once: true });
   const isHeadInView = useInView(headingRef, { once: true });
   const controls = useAnimation();
+
+  const [windowWidth, setWindowWidth] = useState();
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+  }, [window.innerWidth]);
 
   useEffect(() => {
     if (isCardInView) controls.start("show");
@@ -178,7 +183,7 @@ const Destinations = () => {
       >
         Popular Destinations
       </motion.h2>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
         {popularDestinations.map((dest) => {
           const cardRef = useRef(null);
           const isInView = useInView(cardRef, { once: true });
@@ -220,7 +225,7 @@ const Destinations = () => {
           );
         })}
       </div>
-      {isOpen && selectedDest && (
+      {isOpen && selectedDest && windowWidth > 750 && (
         <Modal dest={selectedDest} setIsOpen={setIsOpen} />
       )}
     </motion.div>

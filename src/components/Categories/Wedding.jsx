@@ -30,7 +30,7 @@ const Wedding = () => {
 
   return (
     <div>
-      <form className="flex w-fit m-auto p-3">
+      <form className="grid md:grid-cols-3 lg:flex w-fit m-auto p-3">
         <div className="flex flex-col">
           <label htmlFor="location" className="font-semibold text-sm m-1 ml-3">
             Select Location
@@ -40,7 +40,7 @@ const Wedding = () => {
             type="text"
             name="location"
             placeholder="Ex.Gurugram"
-            className="border border-black rounded-l-lg p-4 font-bold text-2xl h-16 "
+            className="border border-black rounded-lg md:rounded-r-none md:rounded-l-lg p-1 md:p-4 font-bold text-2xl md:h-16 "
           />
         </div>
         <div className="flex flex-col">
@@ -51,7 +51,7 @@ const Wedding = () => {
             ref={checkInRef}
             type="date"
             name="checkIn"
-            className="border-y border-black p-4 font-bold text-lg h-16"
+            className="rounded-lg md:rounded-none border md:border-x-0 md:border-y border-black p-1 md:p-4 font-bold text-lg md:h-16"
           />
         </div>
         <div className="flex flex-col">
@@ -62,7 +62,7 @@ const Wedding = () => {
             ref={checkOutRef}
             type="date"
             name="checkOut"
-            className="border border-black p-4 font-bold text-lg h-16"
+            className="border rounded-l-lg md:rounded-l-none rounded-r-lg lg:rounded-none border-black p-1 md:p-4 font-bold text-lg md:h-16"
           />
         </div>
         <div className="flex flex-col">
@@ -74,7 +74,7 @@ const Wedding = () => {
             type="number"
             name="rooms"
             placeholder="0"
-            className="border-y border-black  p-4 font-bold text-2xl w-36 h-16"
+            className=" border md:border-r-0 lg:border-y border-black p-1 md:p-4 font-bold text-2xl lg:w-36 md:h-16 rounded-r-lg md:rounded-r-none rounded-l-lg lg:rounded-none"
           />
         </div>
         <div className="flex flex-col">
@@ -86,7 +86,7 @@ const Wedding = () => {
             type="number"
             name="guests"
             placeholder="0"
-            className="border border-black rounded-r-lg p-4 font-bold text-2xl w-36 h-16"
+            className="border border-black rounded-l-lg md:rounded-l-none rounded-r-lg p-1 md:p-4 font-bold text-2xl lg:w-36 md:h-16"
           />
         </div>
       </form>

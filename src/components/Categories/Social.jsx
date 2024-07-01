@@ -30,7 +30,7 @@ const Social = () => {
 
   return (
     <div>
-      <form className="flex w-fit m-auto p-3">
+      <form className="grid md:grid-cols-3 lg:flex w-fit m-auto p-3">
         <div className="flex flex-col">
           <label htmlFor="location" className="font-semibold text-sm m-1 ml-3">
             Select Location
@@ -62,7 +62,7 @@ const Social = () => {
             ref={checkOutRef}
             type="date"
             name="checkOut"
-            className="border border-black p-4 font-bold text-lg h-16"
+            className="border md:rounded-r-lg lg:rounded-none border-black p-4 font-bold text-lg h-16"
           />
         </div>
         <div className="flex flex-col">
@@ -74,7 +74,7 @@ const Social = () => {
             type="number"
             name="rooms"
             placeholder="0"
-            className="border-y border-black  p-4 font-bold text-2xl w-36 h-16"
+            className=" border border-r-0 lg:border-y border-black p-4 font-bold text-2xl lg:w-36 h-16 md:rounded-l-lg lg:rounded-none"
           />
         </div>
         <div className="flex flex-col">
@@ -86,7 +86,7 @@ const Social = () => {
             type="number"
             name="guests"
             placeholder="0"
-            className="border border-black rounded-r-lg p-4 font-bold text-2xl w-36 h-16"
+            className="border border-black rounded-r-lg p-4 font-bold text-2xl lg:w-36 h-16"
           />
         </div>
       </form>
