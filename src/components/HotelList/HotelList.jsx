@@ -60,7 +60,7 @@ const getHotels = async (
 
 const DisplayHotels = () => {
   return (
-    <div className="flex flex-wrap gap-4 my-10 md:my-5 mx-8 px-2 py-1 drop-shadow-lg">
+    <div className="flex justify-evenly flex-wrap gap-4 my-10 md:my-5 mx-8 px-2 py-1 drop-shadow-lg">
       {staticHotelList.map((hotel) => {
         const cardRef = useRef(null);
         const controls = useAnimation();
