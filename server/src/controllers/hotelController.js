@@ -1,4 +1,5 @@
 import Hotel from "../models/Hotel.js";
+import enrichHotelWithImage from "../utils/fetchImage.js";
 
 // Get all hotels
 export const getAllHotels = async (req, res) => {
@@ -46,9 +47,14 @@ export const getHotelByCity = async (req, res) => {
         ? hotel.hall?.total_halls > 0
         : hotel.room?.total_rooms > 0
     );
+
+    const enrichedHotels = await Promise.all(
+      filteredHotels.map((hotel) => enrichHotelWithImage(hotel))
+    );
+
     res.status(200).json({
       message: "Hotels fetched successfully",
-      hotels: filteredHotels,
+      hotels: enrichedHotels,
     });
   } catch (error) {
     console.error("Error fetching hotels by city:", error);
