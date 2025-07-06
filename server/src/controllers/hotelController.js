@@ -36,7 +36,7 @@ export const getHotelByCity = async (req, res) => {
       baseQuery.hall = { $exists: true }; // Only hotels with halls
     }
 
-    const hotels = await Hotel.find(baseQuery);
+    const hotels = await Hotel.find(baseQuery).sort({ review_score: -1 });
     if (hotels.length === 0) {
       return res
         .status(404)

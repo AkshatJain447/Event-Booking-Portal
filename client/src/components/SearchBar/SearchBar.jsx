@@ -1,46 +1,75 @@
 import { CiSearch } from "react-icons/ci";
 import { motion } from "framer-motion";
-import { useContext, useRef } from "react";
-import { HotelSearch } from "../../store/store";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setHotels, setLoading } from "../../store/hotelSlice";
 
-const Wedding = () => {
-  const { setSearchQuery, setLoading } = useContext(HotelSearch);
-  const locationRef = useRef(null);
-  const checkInRef = useRef(null);
-  const checkOutRef = useRef(null);
-  const roomsRef = useRef(null);
-  const personRef = useRef(null);
+const cityMap = {
+  "new delhi": "DEL",
+  delhi: "DEL",
+  mumbai: "BOM",
+  bangalore: "BLR",
+  hyderabad: "HYD",
+  chennai: "MAA",
+  kolkata: "CCU",
+  goa: "GOI",
+  ahmedabad: "AMD",
+  pune: "PNQ",
+  jaipur: "JAI",
+};
 
-  const handleSearch = () => {
-    setLoading(true);
-    const location = locationRef.current.value;
-    const checkIn = checkInRef.current.value;
-    const checkOut = checkOutRef.current.value;
-    const rooms = roomsRef.current.value;
-    const person = personRef.current.value;
-    setSearchQuery({ location, checkIn, checkOut, rooms, person });
+const SearchBar = ({ category }) => {
+  const [location, setLocation] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    locationRef.current.value = "";
-    checkInRef.current.value = "";
-    checkOutRef.current.value = "";
-    roomsRef.current.value = "";
-    personRef.current.value = "";
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    dispatch(setLoading(true));
+
+    if (location.trim() === "") {
+      alert("Please enter a location");
+      dispatch(setLoading(false));
+      return;
+    }
+    const cityCode = cityMap[location.toLowerCase()];
+    if (!cityCode) {
+      alert("Our service is not available in this city");
+      navigate(`/`);
+      dispatch(setLoading(false));
+      return;
+    }
+    const type = category.roomType !== "Rooms" ? "hall" : "room";
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/hotels/city/${cityCode}/${type}`
+      );
+      const data = await response.json();
+      dispatch(setHotels(data.hotels));
+      navigate(`/search`);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
   return (
-    <div>
-      <form className="grid md:grid-cols-3 lg:flex w-fit m-auto p-3">
+    <form onSubmit={handleSearch} className=" w-fit m-auto p-3">
+      <div className="grid md:grid-cols-3 lg:flex justify-center">
         <div className="flex flex-col">
           <label htmlFor="location" className="font-semibold text-sm m-1 ml-3">
             Select Location
           </label>
           <input
-            ref={locationRef}
             type="text"
+            value={location}
             name="location"
-            placeholder="Ex.Gurugram"
-            className="border border-black rounded-lg md:rounded-r-none md:rounded-l-lg p-1 md:p-4 font-bold text-2xl md:h-16 "
+            placeholder="Ex.Jaipur"
+            className="border border-black rounded-lg md:rounded-r-none md:rounded-l-lg p-1 md:p-4 font-bold text-2xl md:h-16"
+            onChange={(e) => setLocation(e.target.value)}
           />
         </div>
         <div className="flex flex-col">
@@ -48,7 +77,6 @@ const Wedding = () => {
             Check In Date
           </label>
           <input
-            ref={checkInRef}
             type="date"
             name="checkIn"
             className="rounded-lg md:rounded-none border md:border-x-0 md:border-y border-black p-1 md:p-4 font-bold text-lg md:h-16"
@@ -59,7 +87,6 @@ const Wedding = () => {
             Check Out Date
           </label>
           <input
-            ref={checkOutRef}
             type="date"
             name="checkOut"
             className="border rounded-l-lg md:rounded-l-none rounded-r-lg lg:rounded-none border-black p-1 md:p-4 font-bold text-lg md:h-16"
@@ -67,10 +94,9 @@ const Wedding = () => {
         </div>
         <div className="flex flex-col">
           <label htmlFor="rooms" className="font-semibold text-sm m-1 ml-3">
-            Rooms
+            {category.roomType}
           </label>
           <input
-            ref={roomsRef}
             type="number"
             name="rooms"
             placeholder="0"
@@ -79,31 +105,30 @@ const Wedding = () => {
         </div>
         <div className="flex flex-col">
           <label htmlFor="guests" className="font-semibold text-sm m-1 ml-3">
-            Guests
+            {category.guestLabel}
           </label>
           <input
-            ref={personRef}
             type="number"
             name="guests"
             placeholder="0"
             className="border border-black rounded-l-lg md:rounded-l-none rounded-r-lg p-1 md:p-4 font-bold text-2xl lg:w-36 md:h-16"
           />
         </div>
-      </form>
-      <Link to={"/search"}>
+      </div>
+      <div className="flex justify-center mt-4">
         <motion.button
+          type="submit"
           initial={{ scale: 1.1, translateY: "24px" }}
           animate={{ scale: 1, translateY: "20px" }}
           whileTap={{ scale: 0.9 }}
           className="m-auto -mt-6 font-semibold text-2xl flex items-center gap-1 bg-gradient-to-r from-accent1 to-accent2 pl-6 pr-8 py-1 rounded-full text-white "
-          onClick={handleSearch}
         >
           <CiSearch />
           Search
         </motion.button>
-      </Link>
-    </div>
+      </div>
+    </form>
   );
 };
 
-export default Wedding;
+export default SearchBar;

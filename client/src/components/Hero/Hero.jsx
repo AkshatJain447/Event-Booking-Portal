@@ -1,17 +1,12 @@
-// import { FaHome } from "react-icons/fa";
-// import styles from "./Hero.module.css";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+
 import weddingIcon from "../../assets/hindu-wedding.png";
 import corporateIcon from "../../assets/calendar.png";
 import socialIcon from "../../assets/bar.png";
 import privateIcon from "../../assets/party.png";
 import leisureIcon from "../../assets/travel-agent.png";
-import Wedding from "../Categories/Wedding";
-import Corporate from "../Categories/Corporate";
-import Social from "../Categories/Social";
-import Private from "../Categories/Private";
-import Leisure from "../Categories/Leisure";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import SearchBar from "../SearchBar/SearchBar";
 
 const categories = [
   {
@@ -19,40 +14,42 @@ const categories = [
     title: "Weddings and Celebrations",
     component: "Weddings",
     icon: weddingIcon,
+    roomType: "Rooms",
+    guestLabel: "Guests",
   },
   {
     id: 2,
     title: "Corporate Events",
     component: "Corporate",
     icon: corporateIcon,
+    roomType: "Meeting Hall",
+    guestLabel: "Attendees",
   },
   {
     id: 3,
     title: "Social Gatherings",
     component: "Social",
     icon: socialIcon,
+    roomType: "Halls",
+    guestLabel: "Guests",
   },
   {
     id: 4,
     title: "Private Functions",
     component: "Private",
     icon: privateIcon,
+    roomType: "Rooms",
+    guestLabel: "Guests",
   },
   {
     id: 5,
     title: "Leisure and Travel",
     component: "Leisure",
     icon: leisureIcon,
+    roomType: "Rooms",
+    guestLabel: "Peoples",
   },
 ];
-
-const componentMapping = {
-  Weddings: Wedding,
-  Corporate: Corporate,
-  Social: Social,
-  Private: Private,
-  Leisure: Leisure,
-};
 
 const Container = ({ children }) => {
   return <div className="md:-mt-3">{children}</div>;
@@ -60,11 +57,16 @@ const Container = ({ children }) => {
 
 const Hero = () => {
   const [active, setActive] = useState("Weddings");
+  const [acticeComponent, setActiveComponent] = useState(categories[0]);
   const [windowWidth, setWindowWidth] = useState();
   useEffect(() => {
     setWindowWidth(window.innerWidth);
   }, [window.innerWidth]);
-  const ActiveComponent = componentMapping[active];
+
+  const handleActiveTab = (type) => {
+    setActive(type.component);
+    setActiveComponent(type);
+  };
 
   return (
     <div className="md:mt-10 ">
@@ -82,7 +84,7 @@ const Hero = () => {
                 className={`flex flex-col items-center w-24 text-center pb-2 duration-50 ${
                   active === type.component && "border-b-2 border-accent3"
                 }`}
-                onClick={() => setActive(type.component)}
+                onClick={() => handleActiveTab(type)}
               >
                 <img src={type.icon} alt="icon" className="h-12" />
                 <h4 className="text-sm">{type.title}</h4>
@@ -98,7 +100,7 @@ const Hero = () => {
         </h3>
         {
           <Container>
-            <ActiveComponent />
+            <SearchBar category={acticeComponent} />
           </Container>
         }
       </motion.div>

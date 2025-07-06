@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { HotelData, staticHotelList } from "../../store/store";
+import { useEffect, useRef } from "react";
 import noFound from "../../assets/no-results.png";
 import Loader from "../Loader/Loader";
 import { motion, useAnimation, useInView } from "framer-motion";
 import { FaStar } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const DisplayHotels = ({ hotelList }) => {
   return (
@@ -155,40 +155,18 @@ const EmptyMsg = () => {
 };
 
 const HotelList = () => {
-  const [hotelData, setHotelData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchHotels = async () => {
-      try {
-        const data = await fetch(
-          "http://localhost:5000/api/hotels/city/GOI/room"
-        );
-        const response = await data.json();
-        setHotelData(response.hotels);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHotels();
-  }, []);
+  const hotels = useSelector((state) => state.hotels.hotels);
+  const loading = useSelector((state) => state.hotels.loading);
 
   return (
     <>
       {loading ? (
         <Loader />
-      ) : hotelData.length > 0 ? (
-        <DisplayHotels hotelList={hotelData} />
+      ) : hotels.length > 0 ? (
+        <DisplayHotels hotelList={hotels} />
       ) : (
         <EmptyMsg />
       )}
-      {/* <HotelData.Provider value={hotelList}>
-        <DisplayHotels />
-        
-      </HotelData.Provider> */}
     </>
   );
 };

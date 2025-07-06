@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# server
+indian_hotels_data.json
+seeder.js
+.env
+
+days_task.txt
