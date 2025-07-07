@@ -169,6 +169,7 @@ const Destinations = () => {
       initial="hidden"
       animate={controls}
       transition={{ duration: 0.5, ease: "backOut" }}
+      id="destinations"
     >
       <motion.h2
         ref={headingRef}

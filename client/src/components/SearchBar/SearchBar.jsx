@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setHotels, setLoading } from "../../store/hotelSlice";
+import { setHotelCount, setHotels, setLoading } from "../../store/hotelSlice";
+import { toast } from "react-hot-toast";
 
 const cityMap = {
   "new delhi": "DEL",
@@ -29,17 +30,12 @@ const SearchBar = ({ category }) => {
     dispatch(setLoading(true));
 
     if (location.trim() === "") {
-      alert("Please enter a location");
+      toast.dismiss();
+      toast.error("Please enter a location");
       dispatch(setLoading(false));
       return;
     }
-    const cityCode = cityMap[location.toLowerCase()];
-    if (!cityCode) {
-      alert("Our service is not available in this city");
-      navigate(`/`);
-      dispatch(setLoading(false));
-      return;
-    }
+    const cityCode = cityMap[location.toLowerCase()] || location;
     const type = category.roomType !== "Rooms" ? "hall" : "room";
 
     try {
@@ -48,6 +44,7 @@ const SearchBar = ({ category }) => {
       );
       const data = await response.json();
       dispatch(setHotels(data.hotels));
+      dispatch(setHotelCount(data.hotelCount));
       navigate(`/search`);
     } catch (error) {
       console.log(error);

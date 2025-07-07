@@ -37,10 +37,16 @@ export const getHotelByCity = async (req, res) => {
     }
 
     const hotels = await Hotel.find(baseQuery).sort({ review_score: -1 });
+    const queryHotelCount = await Hotel.countDocuments(baseQuery);
+
     if (hotels.length === 0) {
       return res
         .status(404)
-        .json({ message: "No hotels found in the specified city and type" });
+        .json({
+          message: "No hotels found in the specified city and type",
+          hotels: [],
+          hotelCount: 0,
+        });
     }
     const filteredHotels = hotels.filter((hotel) =>
       type === "hall"
@@ -55,6 +61,7 @@ export const getHotelByCity = async (req, res) => {
     res.status(200).json({
       message: "Hotels fetched successfully",
       hotels: enrichedHotels,
+      hotelCount: queryHotelCount,
     });
   } catch (error) {
     console.error("Error fetching hotels by city:", error);

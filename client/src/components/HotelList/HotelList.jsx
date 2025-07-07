@@ -1,146 +1,28 @@
-import { useEffect, useRef } from "react";
 import noFound from "../../assets/no-results.png";
 import Loader from "../Loader/Loader";
-import { motion, useAnimation, useInView } from "framer-motion";
-import { FaStar } from "react-icons/fa";
+import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import HotelCard from "../HotelCard/HotelCard";
 
 const DisplayHotels = ({ hotelList }) => {
   return (
-    <div className="flex justify-evenly flex-wrap gap-4 my-10 md:my-5 mx-8 px-2 py-1 drop-shadow-lg">
-      {hotelList.map((hotel) => {
-        const cardRef = useRef(null);
-        const controls = useAnimation();
-        const isInView = useInView(cardRef, { once: true });
-
-        useEffect(() => {
-          if (isInView) controls.start("visible");
-        }, [isInView, controls]);
-
-        const hasRoom = hotel.room;
-        const hasHall = hotel.hall;
-
-        return (
-          <motion.div
-            ref={cardRef}
-            key={hotel.hotel_id}
-            className="md:flex gap-2 lg:w-[47%] rounded-md shadow-md bg-white"
-            variants={{
-              hidden: { opacity: 0, translateY: 90 },
-              visible: { opacity: 1, translateY: 0 },
-            }}
-            initial="hidden"
-            animate={controls}
-            transition={{
-              duration: 0.5,
-              ease: "backOut",
-            }}
-          >
-            <div>
-              <img
-                src={hotel.main_photo_url}
-                alt="Hotel"
-                className="h-[250px] w-[400px] rounded-lg"
-              />
-              <div className="ml-2 my-1">
-                <h1 className="font-bold text-xl">{hotel.hotel_name}</h1>
-                <p className="text-accent3">
-                  {hotel.address}, {hotel.district}
-                </p>
-              </div>
-            </div>
-            <div className="md:border-l border-black pl-2 my-3">
-              <div className="flex gap-1 items-center">
-                <h2
-                  className={`flex items-center text-xl gap-1 font-bold ${
-                    hotel.review_score >= 7.5
-                      ? "text-blue-800"
-                      : "text-orange-500"
-                  }`}
-                >
-                  <p className="inline-block">{hotel.review_score_word}</p>
-                  <span
-                    className={`text-white px-[6px] rounded-md shadow-lg ${
-                      hotel.review_score >= 7.5
-                        ? "bg-blue-800"
-                        : "bg-orange-500"
-                    }`}
-                  >
-                    {hotel.review_score}
-                  </span>
-                </h2>
-                <span className="italic text-sm">
-                  ({hotel.review_nr} reviews)
-                </span>
-              </div>
-
-              <p className="flex items-center gap-1 text-blue-800 mt-2 text-lg">
-                <FaStar className="text-sm" /> Class: {hotel.class}
-              </p>
-
-              <p className="mt-2 font-semibold">Check-In:</p>
-              <p>
-                From{" "}
-                <span className="text-blue-800">{hotel.checkin?.from}</span> to{" "}
-                <span className="text-blue-800">{hotel.checkin?.until}</span>
-              </p>
-
-              <p className="mt-1 font-semibold">Check-Out:</p>
-              <p>
-                From{" "}
-                <span className="text-blue-800">{hotel.checkout?.from}</span> to{" "}
-                <span className="text-blue-800">{hotel.checkout?.until}</span>
-              </p>
-
-              <div className="flex flex-wrap mt-3">
-                {hotel.is_free_cancellable && (
-                  <p className="border px-2 py-[2px] mr-2 mb-2 rounded-md border-purple-600 text-purple-600">
-                    Free Cancellable
-                  </p>
-                )}
-                {hotel.is_no_prepayment_block && (
-                  <p className="border px-2 py-[2px] mr-2 mb-2 rounded-md border-accent3 text-accent3">
-                    No Prepayment
-                  </p>
-                )}
-                {hotel.cc_required && (
-                  <p className="border px-2 py-[2px] mr-2 mb-2 rounded-md border-red-400 text-red-500">
-                    Credit Card Required
-                  </p>
-                )}
-              </div>
-
-              <div className="border-t border-black pt-1 mr-2">
-                <p className="font-semibold">Total Amount:</p>
-                {hasRoom && (
-                  <p className="text-green-700 text-xl font-semibold">
-                    ₹{hotel.room.gross_price}
-                    <span className="line-through mx-2 font-normal text-secondaryText">
-                      ₹{hotel.room.all_inclusive_price}
-                    </span>
-                  </p>
-                )}
-                {hasHall && (
-                  <p className="text-purple-700 text-xl font-semibold mt-1">
-                    ₹{hotel.hall.gross_price} (Hall)
-                    <span className="line-through mx-2 font-normal text-secondaryText">
-                      ₹{hotel.hall.all_inclusive_price}
-                    </span>
-                  </p>
-                )}
-              </div>
-            </div>
-          </motion.div>
-        );
-      })}
+    <div className="flex justify-evenly flex-wrap gap-6 my-3 mx-3 px-2 py-1 md:mb-5 md:mt-0 md:mx-8 drop-shadow-lg">
+      {hotelList.map((hotel) => (
+        <HotelCard key={hotel._id} hotel={hotel} />
+      ))}
     </div>
   );
 };
 
 const EmptyMsg = () => {
+  toast.dismiss();
+  toast.error("Sorry, no hotels found in this city");
+
   return (
     <motion.h1
-      className="bg-white text-accent1 text-4xl font-bold m-14 rounded-lg shadow-lg py-10 flex justify-center items-center"
+      className="bg-white text-accent1 text-4xl font-bold m-14 mt-4 rounded-lg shadow-lg py-10 flex justify-center items-center"
       initial={{ opacity: 0, scale: 0.5 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{
@@ -149,8 +31,29 @@ const EmptyMsg = () => {
       }}
     >
       <img src={noFound} alt="notFound" className="h-14 mr-2"></img>Sorry, no
-      hotels found
+      hotels found, Please try another city
     </motion.h1>
+  );
+};
+
+const QuerySummary = () => {
+  const hotelCount = useSelector((state) => state.hotels.hotelCount);
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex justify-between p-2 mt-1 items-center w-[93%] mx-auto">
+      <button
+        className="px-3 border-2 border-red-400 hover:border-red-600 rounded-xl text-red-400 hover:text-red-600 tracking-wide font-semibold text-lg shadow-md hover:scale-105 transition-all duration-300"
+        onClick={() => navigate("/")}
+      >
+        Back to Home
+      </button>
+      <div className="px-3 py-1 border border-green-500 rounded-xl shadow-lg tracking-wide font-semibold text-gray-600">
+        Found{" "}
+        <span className="text-green-500 font-bold">{hotelCount} hotels </span>
+        in current city
+      </div>
+    </div>
   );
 };
 
@@ -163,9 +66,15 @@ const HotelList = () => {
       {loading ? (
         <Loader />
       ) : hotels.length > 0 ? (
-        <DisplayHotels hotelList={hotels} />
+        <>
+          {window.innerWidth > 700 && <QuerySummary />}
+          <DisplayHotels hotelList={hotels} />
+        </>
       ) : (
-        <EmptyMsg />
+        <>
+          {window.innerWidth > 700 && <QuerySummary />}
+          <EmptyMsg />
+        </>
       )}
     </>
   );

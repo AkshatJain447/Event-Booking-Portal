@@ -31,28 +31,25 @@ const Footer = () => {
           <div className="mb-4">
             <h3 className="text-xl font-bold mb-2">About Us</h3>
             <p className="text-sm text-justify">
-              I am an aspiring software engineer with a strong technical
-              background and a passion for solving complex problems. They
-              possess proficiency in multiple programming languages and web
-              development frameworks, emphasizing teamwork, adaptability, and
-              effective collaboration.
+              I'm an computer science graduate with a strong foundation in
+              full-stack development and a passion for building real-world
+              solutions. I’ve developed job portals, booking systems, and
+              responsive UIs using the MERN stack, and thrive in collaborative,
+              fast-paced environments.
             </p>
           </div>
           <div className="mb-4">
             <h3 className="text-xl font-bold mb-2">Quick Links</h3>
             <ul className="text-sm">
               <li>
-                <a href="#">Home</a>
+                <a href="#navbar">Home</a>
               </li>
               <li>
-                <a href="#">About</a>
+                <a href="#destinations">Destinations</a>
               </li>
-              <li>
-                <a href="#">Destinations</a>
-              </li>
-              <li>
+              {/* <li>
                 <a href="#">Contact</a>
-              </li>
+              </li> */}
             </ul>
           </div>
           <div className="mb-4">

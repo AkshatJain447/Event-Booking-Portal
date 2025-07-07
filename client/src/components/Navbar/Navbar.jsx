@@ -17,6 +17,7 @@ const Navbar = () => {
       initial={{ opacity: 0, scaleX: 0.5 }}
       animate={{ opacity: 1, scaleX: 1 }}
       transition={{ duration: 0.4, type: "spring" }}
+      id="navbar"
     >
       <Link
         to={"/"}
