@@ -40,7 +40,7 @@ const SearchBar = ({ category }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:5000/api/hotels/city/${cityCode}/${type}`
+        `https://event-booking-portal.onrender.com/api/hotels/city/${cityCode}/${type}`
       );
       const data = await response.json();
       dispatch(setHotels(data.hotels));
