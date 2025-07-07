@@ -12,7 +12,7 @@ dotenv.config();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://eventeaseportal.netlify.app/"],
+    origin: ["http://localhost:5173", "https://eventeaseportal.netlify.app"],
   })
 );
 
