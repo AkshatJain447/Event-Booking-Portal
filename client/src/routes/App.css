@@ -1,8 +1,26 @@
 #home {
   background-image: url("../assets/HomeBg1.jpg");
   background-size: cover;
-  height: 63vh;
   background-repeat: no-repeat;
+  height: 63vh;
+}
+
+@media screen and (min-height: 900px) {
+  #home {
+    height: 52vh;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #home {
+    height: 55vh;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #home {
+    height: 70vh;
+  }
 }
 
 *::-webkit-scrollbar {

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 const Loader = () => {
   return (
     <motion.p
-      className="my-8 flex justify-center items-center text-4xl font-bold"
+      className="my-8 flex flex-wrap justify-center items-center text-4xl font-bold"
       initial={{ opacity: 0, scale: 1.2 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{

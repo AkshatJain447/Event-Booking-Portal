@@ -28,6 +28,7 @@ const SearchBar = ({ category }) => {
   const handleSearch = async (e) => {
     e.preventDefault();
     dispatch(setLoading(true));
+    navigate(`/search`);
 
     if (location.trim() === "") {
       toast.dismiss();
@@ -45,7 +46,6 @@ const SearchBar = ({ category }) => {
       const data = await response.json();
       dispatch(setHotels(data.hotels));
       dispatch(setHotelCount(data.hotelCount));
-      navigate(`/search`);
     } catch (error) {
       console.log(error);
     } finally {

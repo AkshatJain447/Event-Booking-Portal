@@ -69,7 +69,7 @@ const Hero = () => {
   };
 
   return (
-    <div className="md:mt-10 ">
+    <div className="md:mt-10">
       <motion.div
         className="bg-white w-fit m-auto rounded-lg"
         initial={{ opacity: 0, translateY: 130 }}
