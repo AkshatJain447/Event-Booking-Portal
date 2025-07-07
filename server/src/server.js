@@ -4,6 +4,7 @@ import cors from "cors";
 
 import { connectDB } from "./config/db.js";
 import hotelRouter from "./routes/hotelRoute.js";
+import offerRouter from "./routes/offerRoute.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,6 +18,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use("/api/offers", offerRouter);
 app.use("/api/hotels", hotelRouter);
 
 connectDB().then(() => {

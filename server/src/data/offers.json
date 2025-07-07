@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Summer Wedding Discount",
+    "description": "Book your wedding this summer and get 20% off on venue booking."
+  },
+  {
+    "title": "Early Bird Special",
+    "description": "Plan ahead and save! Book your event 6 months in advance and get 20% off."
+  },
+  {
+    "title": "Last-Minute Deal",
+    "description": "Need a venue fast? Get 30% off on last-minute bookings!"
+  },
+  {
+    "title": "Wedding Package",
+    "description": "Get a complete wedding package (Venue + Catering + DJ) at 25% off."
+  },
+  {
+    "title": "Referral Bonus",
+    "description": "Refer a friend and get $50 off your next booking."
+  },
+  {
+    "title": "Loyalty Program",
+    "description": "Earn points with every booking and redeem for discounts on future events."
+  },
+  {
+    "title": "Corporate Package",
+    "description": "Exclusive corporate rates: Book 3 events and get the 4th at 10% off."
+  },
+  {
+    "title": "Holiday Special",
+    "description": "Celebrate the holidays with us! Get 15% off on all bookings for December."
+  },
+  {
+    "title": "Weekend Getaway",
+    "description": "Book a weekend event and enjoy a complimentary night's stay."
+  }
+]
