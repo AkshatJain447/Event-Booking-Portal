@@ -73,7 +73,6 @@ const SearchBar = ({ category }) => {
         peoples: searchQuery.peoples,
       };
       dispatch(setStoreSearchQuery(storeSearchQuery));
-      console.log(storeSearchQuery);
     } catch (error) {
       console.log(error);
     } finally {

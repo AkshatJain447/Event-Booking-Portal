@@ -7,6 +7,7 @@ import Home from "./components/Home/Home";
 import HotelList from "./components/HotelList/HotelList";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
+import Contact from "./components/Contact/Contact";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <HotelList />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
       },
     ],
   },
