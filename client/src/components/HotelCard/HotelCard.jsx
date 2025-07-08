@@ -1,11 +1,13 @@
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { FaStar } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const HotelCard = ({ hotel }) => {
   const cardRef = useRef(null);
   const controls = useAnimation();
   const isInView = useInView(cardRef, { once: true });
+  const storeSearchQuery = useSelector((state) => state.hotels.searchQuery);
 
   useEffect(() => {
     if (isInView) controls.start("visible");
@@ -34,7 +36,7 @@ const HotelCard = ({ hotel }) => {
         <img
           src={hotel.main_photo_url}
           alt="Hotel"
-          className="h-[250px] w-full object-cover rounded-lg"
+          className="h-[250px] min-w-[90vw] md:min-w-fit w-full object-cover rounded-lg"
         />
         <div className="flex justify-between items-center px-2 py-2 text-sm">
           {/* Rating + Review */}
@@ -94,26 +96,46 @@ const HotelCard = ({ hotel }) => {
         <div className="pt-1 mx-1">
           <p className="text-gray-600">Total Amount:</p>
           {hasRoom && (
-            <p className="text-green-700 text-lg font-semibold flex justify-between">
+            <div className="text-green-700 text-lg font-semibold flex justify-between">
               Room:
               <div>
-                ₹{Math.ceil(hotel.room.gross_price)}
+                ₹
+                {Math.ceil(
+                  hotel.room.gross_price *
+                    storeSearchQuery.rooms *
+                    storeSearchQuery.duration
+                )}
                 <span className="line-through mx-2 font-normal text-secondaryText italic">
-                  ₹{Math.ceil(hotel.room.all_inclusive_price)}
+                  ₹
+                  {Math.ceil(
+                    hotel.room.all_inclusive_price *
+                      storeSearchQuery.rooms *
+                      storeSearchQuery.duration
+                  )}
                 </span>
               </div>
-            </p>
+            </div>
           )}
           {hasHall && (
-            <p className="text-purple-700 text-lg font-semibold mt-[1px] flex justify-between">
+            <div className="text-purple-700 text-lg font-semibold mt-[1px] flex justify-between">
               Hall:
               <div>
-                ₹{Math.ceil(hotel.hall.gross_price)}
+                ₹
+                {Math.ceil(
+                  hotel.hall.gross_price *
+                    storeSearchQuery.halls *
+                    storeSearchQuery.duration
+                )}
                 <span className="line-through mx-2 font-normal text-secondaryText italic">
-                  ₹{Math.ceil(hotel.hall.all_inclusive_price)}
+                  ₹
+                  {Math.ceil(
+                    hotel.hall.all_inclusive_price *
+                      storeSearchQuery.halls *
+                      storeSearchQuery.duration
+                  )}
                 </span>
               </div>
-            </p>
+            </div>
           )}
           <button className="bg-blue-100 my-1 py-1 px-3 text-blue-500 rounded-full float-right hover:scale-105 transition-all duration-300 hover:shadow-md hover:bg-blue-200 hover:text-blue-600">
             Book Now

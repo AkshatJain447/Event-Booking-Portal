@@ -1,9 +1,14 @@
 import { CiSearch } from "react-icons/ci";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setHotelCount, setHotels, setLoading } from "../../store/hotelSlice";
+import {
+  setHotelCount,
+  setHotels,
+  setLoading,
+  setStoreSearchQuery,
+} from "../../store/hotelSlice";
 import { toast } from "react-hot-toast";
 
 const cityMap = {
@@ -21,7 +26,14 @@ const cityMap = {
 };
 
 const SearchBar = ({ category }) => {
-  const [location, setLocation] = useState("");
+  const [searchQuery, setSearchQuery] = useState({
+    location: "",
+    checkIn: "",
+    checkOut: "",
+    rooms: 1,
+    halls: 1,
+    peoples: 2,
+  });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -30,15 +42,18 @@ const SearchBar = ({ category }) => {
     dispatch(setLoading(true));
     navigate(`/search`);
 
-    if (location.trim() === "") {
+    // location pre validation
+    if (searchQuery.location.trim() === "") {
       toast.dismiss();
       toast.error("Please enter a location");
       dispatch(setLoading(false));
       return;
     }
-    const cityCode = cityMap[location.toLowerCase()] || location;
+    const cityCode =
+      cityMap[searchQuery.location.toLowerCase()] || searchQuery.location;
     const type = category.roomType !== "Rooms" ? "hall" : "room";
 
+    // API request for hotels and seting storesearchquery
     try {
       const response = await fetch(
         `https://event-booking-portal.onrender.com/api/hotels/city/${cityCode}/${type}`
@@ -47,12 +62,38 @@ const SearchBar = ({ category }) => {
       const data = await response.json();
       dispatch(setHotels(data.hotels));
       dispatch(setHotelCount(data.hotelCount));
+
+      const duration =
+        (new Date(searchQuery.checkOut) - new Date(searchQuery.checkIn)) /
+        (1000 * 60 * 60 * 24);
+      const storeSearchQuery = {
+        duration,
+        rooms: searchQuery.rooms,
+        halls: searchQuery.halls,
+        peoples: searchQuery.peoples,
+      };
+      dispatch(setStoreSearchQuery(storeSearchQuery));
+      console.log(storeSearchQuery);
     } catch (error) {
       console.log(error);
     } finally {
       dispatch(setLoading(false));
     }
   };
+
+  // fetching current and tomorrow date
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowFormatted = tomorrow.toISOString().split("T")[0];
+
+    setSearchQuery((prev) => ({
+      ...prev,
+      checkIn: today,
+      checkOut: tomorrowFormatted,
+    }));
+  }, []);
 
   return (
     <form onSubmit={handleSearch} className=" w-fit m-auto p-3">
@@ -63,11 +104,16 @@ const SearchBar = ({ category }) => {
           </label>
           <input
             type="text"
-            value={location}
+            value={searchQuery.location}
             name="location"
             placeholder="Ex.Jaipur"
             className="border border-black rounded-lg md:rounded-r-none md:rounded-l-lg p-1 md:p-4 font-bold text-2xl md:h-16"
-            onChange={(e) => setLocation(e.target.value)}
+            onChange={(e) =>
+              setSearchQuery((prev) => ({
+                ...prev,
+                location: `${e.target.value}`,
+              }))
+            }
           />
         </div>
         <div className="flex flex-col">
@@ -77,7 +123,14 @@ const SearchBar = ({ category }) => {
           <input
             type="date"
             name="checkIn"
+            value={searchQuery.checkIn}
             className="rounded-lg md:rounded-none border md:border-x-0 md:border-y border-black p-1 md:p-4 font-bold text-lg md:h-16"
+            onChange={(e) =>
+              setSearchQuery((prev) => ({
+                ...prev,
+                checkIn: `${e.target.value}`,
+              }))
+            }
           />
         </div>
         <div className="flex flex-col">
@@ -87,7 +140,14 @@ const SearchBar = ({ category }) => {
           <input
             type="date"
             name="checkOut"
+            value={searchQuery.checkOut}
             className="border rounded-l-lg md:rounded-l-none rounded-r-lg lg:rounded-none border-black p-1 md:p-4 font-bold text-lg md:h-16"
+            onChange={(e) =>
+              setSearchQuery((prev) => ({
+                ...prev,
+                checkOut: `${e.target.value}`,
+              }))
+            }
           />
         </div>
         <div className="flex flex-col">
@@ -99,6 +159,11 @@ const SearchBar = ({ category }) => {
             name="rooms"
             placeholder="0"
             className=" border md:border-r-0 lg:border-y border-black p-1 md:p-4 font-bold text-2xl lg:w-36 md:h-16 rounded-r-lg md:rounded-r-none rounded-l-lg lg:rounded-none"
+            onChange={(e) =>
+              category.roomType === "Rooms"
+                ? setSearchQuery((prev) => ({ ...prev, rooms: e.target.value }))
+                : setSearchQuery((prev) => ({ ...prev, halls: e.target.value }))
+            }
           />
         </div>
         <div className="flex flex-col">
@@ -110,6 +175,9 @@ const SearchBar = ({ category }) => {
             name="guests"
             placeholder="0"
             className="border border-black rounded-l-lg md:rounded-l-none rounded-r-lg p-1 md:p-4 font-bold text-2xl lg:w-36 md:h-16"
+            onChange={(e) =>
+              setSearchQuery((prev) => ({ ...prev, peoples: e.target.value }))
+            }
           />
         </div>
       </div>
