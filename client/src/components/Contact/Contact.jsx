@@ -58,7 +58,7 @@ const Contact = () => {
   return (
     <>
       {window.innerWidth > 480 && (
-        <div className="flex my-3 items-center w-[80vw] mx-auto">
+        <div className=" my-3 w-[80vw] mx-auto">
           <motion.button
             whileHover={{ scale: 1.05 }}
             className="px-3 border-2 border-red-400 hover:border-red-600 rounded-xl text-red-400 hover:text-red-600 tracking-wide font-semibold text-lg shadow-md transition-all duration-300"

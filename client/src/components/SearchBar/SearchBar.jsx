@@ -56,8 +56,8 @@ const SearchBar = ({ category }) => {
     // API request for hotels and seting storesearchquery
     try {
       const response = await fetch(
-        // `https://event-booking-portal.onrender.com/api/hotels/city/${cityCode}/${type}`
-        `http://localhost:5000/api/hotels/city/${cityCode}/${type}`
+        `https://event-booking-portal.onrender.com/api/hotels/city/${cityCode}/${type}`
+        // `http://localhost:5000/api/hotels/city/${cityCode}/${type}`
       );
       const data = await response.json();
       dispatch(setHotels(data.hotels));

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { MagnifyingGlass } from "react-loader-spinner";
 import { motion } from "framer-motion";
@@ -10,7 +10,23 @@ import {
   FaBed,
   FaBath,
   FaWifi,
+  FaRegThumbsUp,
+  FaConciergeBell,
+  FaRestroom,
+  FaRegSnowflake,
 } from "react-icons/fa";
+import { IoPeople } from "react-icons/io5";
+import { FcClock } from "react-icons/fc";
+import {
+  GiMicrophone,
+  GiForkKnifeSpoon,
+  GiEmptyHourglass,
+} from "react-icons/gi";
+import { HiWrenchScrewdriver } from "react-icons/hi2";
+import { MdBalcony } from "react-icons/md";
+import room from "../../assets/Room.jpg";
+import hall from "../../assets/hall.jpg";
+import { useSelector } from "react-redux";
 
 const Loader = () => {
   return (
@@ -39,138 +55,263 @@ const Loader = () => {
 };
 
 const HotelContent = ({ hotel }) => {
+  const storeSearchQuery = useSelector((state) => state.hotels.searchQuery);
+
   return (
-    <>
+    <div className="w-[95vw] mb-4 mt-3 md:mb-6 lg:mb-8 mx-auto">
       {/* Hotel Header */}
-      <div>
-        <img src={hotel.max_photo_url} alt="Hotel Image" />
-        <div>
-          <h2 className="text-2xl font-bold text-accent3 flex items-center gap-2">
-            <FaDoorOpen /> {hotel.hotel_name}
-          </h2>
-          <p className="flex items-center text-gray-600 gap-1">
-            <FaMapMarkerAlt /> {hotel.address}
-          </p>
-          <p className="text-sm text-gray-500">
-            📍 Coordinates: {hotel.latitude}, {hotel.longitude}
-          </p>
-          <div>
-            <p>
-              <FaStar className="inline text-yellow-400" />{" "}
-              <strong>Hotel Category:</strong> {hotel.class} Star
+      <motion.div
+        className="bg-white rounded-xl shadow-xl"
+        initial={{ opacity: 0, translateY: 60 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ duration: 0.5, ease: "backOut" }}
+      >
+        <div className="grid grid-cols-3 gap-4">
+          <img
+            src={hotel.max_photo_url}
+            alt="Hotel Image"
+            className="col-span-2 md:rounded-l-xl h-[250px] md:h-[400px] w-full"
+            loading="lazy"
+          />
+          <div className="border-l pl-4 pr-2 my-3">
+            <h2 className="text-3xl font-bold text-accent3 flex items-center gap-2">
+              <FaDoorOpen className="text-7xl" /> {hotel.hotel_name}
+            </h2>
+            <p className="flex items-center text-gray-600 gap-2">
+              <FaMapMarkerAlt /> {hotel.address}
             </p>
-            <p>
-              🗣️ ({hotel.review_nr} reviews) | <strong>Rating:</strong>{" "}
-              <span>{hotel.review_score}</span> – {hotel.review_score_word}
+            <p className="text-sm text-gray-500">
+              📍 Coordinates: {hotel.latitude}, {hotel.longitude}
             </p>
+            <div className="text-lg mt-4">
+              <p className="flex items-center gap-2 mb-1">
+                <FaStar className="text-yellow-400" />
+                <strong>Hotel Category:</strong> {hotel.class} Star
+              </p>
+              <p className="flex items-center gap-2">
+                <FaRegThumbsUp />
+                <strong>Rating:</strong>{" "}
+                <span
+                  className={`rounded-md px-2 text-white font-semibold ${
+                    hotel.review_score > 7 ? "bg-green-600" : "bg-orange-400"
+                  }`}
+                >
+                  {hotel.review_score}
+                </span>
+                <span
+                  className={`font-semibold ${
+                    hotel.review_score > 7
+                      ? "text-green-600"
+                      : "text-orange-400"
+                  }`}
+                >
+                  {hotel.review_score_word}
+                </span>
+                |{" "}
+                <span className="text-gray-500 italic text-sm">
+                  ({hotel.review_nr} reviews)
+                </span>
+              </p>
+            </div>
+
+            {/* Check-In / Check-Out */}
+            <div className="text-lg my-2">
+              <p className="flex items-center gap-2 mb-1">
+                <FcClock />
+                <strong>Check-in:</strong> {hotel.checkin.from} –{" "}
+                {hotel.checkin.until}
+              </p>
+              <p className="flex items-center gap-2 mb-1">
+                <FcClock />
+                <strong>Check-out:</strong> {hotel.checkout.from} –{" "}
+                {hotel.checkout.until}
+              </p>
+              <p className="flex items-center gap-2 mb-1">
+                <GiEmptyHourglass />
+                <strong>Duration:</strong> {storeSearchQuery.duration} days
+              </p>
+            </div>
+
+            {/* Policy Badges */}
+            <div className="flex flex-wrap mt-1">
+              {hotel.is_free_cancellable && (
+                <p className="px-3 py-[2px] mr-2 mb-2 rounded-full bg-purple-200 text-purple-600">
+                  Free Cancellable
+                </p>
+              )}
+              {hotel.is_no_prepayment_block && (
+                <p className="px-3 py-[2px] mr-2 mb-2 rounded-full bg-green-200 text-green-600">
+                  No Prepayment
+                </p>
+              )}
+              {hotel.cc_required && (
+                <p className="px-3 py-[2px] mr-2 mb-2 rounded-full bg-red-200 text-red-600">
+                  Credit Card Required
+                </p>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Amenities */}
-      <div className="mt-4">
-        <h4 className="text-lg font-semibold mb-1">🛎️ Available Amenities</h4>
-        <ul className="list-disc ml-6 text-gray-600">
+      <motion.div
+        className="bg-white rounded-xl shadow-xl my-6 p-2"
+        initial={{ opacity: 0, translateY: 60 }}
+        animate={{ opacity: 1, translateY: 0 }}
+        transition={{ duration: 0.4, ease: "backOut" }}
+      >
+        <h4 className="text-lg text-gray-600 font-semibold mb-1 flex items-center gap-2 ml-2">
+          <FaConciergeBell className="text-accent3" /> Available Amenities
+        </h4>
+        <ul className="flex gap-3">
           {hotel.amenities.map((amenity) => (
-            <li key={amenity}>{amenity}</li>
+            <li
+              key={amenity}
+              className="text-lg border border-gray-200 hover:border-accent3 hover:text-accent3 font-semibold rounded-3xl px-4 py-1 shadow-md cursor-pointer transition-all duration-150"
+            >
+              {amenity}
+            </li>
           ))}
         </ul>
-      </div>
+      </motion.div>
 
-      {/* Policy Badges */}
-      <div className="flex flex-wrap ml-1 mt-[6px] text-xs">
-        {hotel.is_free_cancellable && (
-          <p className="px-3 py-[2px] mr-2 mb-2 rounded-full bg-purple-200 text-purple-600">
-            Free Cancellable
-          </p>
+      <div className="flex items-center gap-8">
+        {/* Room Section */}
+        <motion.div
+          className="bg-white rounded-xl shadow-xl flex items-center gap-2 w-fit"
+          initial={{ opacity: 0, translateX: 60 }}
+          animate={{ opacity: 1, translateX: 0 }}
+          transition={{ duration: 0.4, ease: "backOut" }}
+        >
+          <img
+            src={room}
+            alt="Room Image"
+            className="h-[280px] rounded-l-xl"
+            loading="lazy"
+          />
+          <div className="border-l px-2 pr-4">
+            <h4 className="text-lg font-bold mb-1 mx-1 flex items-center gap-2 text-accent3">
+              <FaBed /> Room Details
+            </h4>
+            <div className="flex items-center gap-3">
+              <p>
+                🛋️ <strong>Type:</strong> {hotel.room.type}
+              </p>
+              <p className="flex items-center gap-1">
+                <IoPeople /> <strong>Capacity:</strong> {hotel.room.capacity}{" "}
+              </p>
+            </div>
+            <p className="mt-1 font-medium">📋 Included Services:</p>
+            <ul className="ml-6 list-disc text-gray-600 text-sm">
+              <li>
+                <FaBed className="inline" /> Premium Queen-sized Bed
+              </li>
+              <li>
+                <FaBath className="inline" /> Ensuite Bathroom
+              </li>
+              <li>
+                <MdBalcony className="inline" /> Private Balcony View
+              </li>
+              <li>
+                <FaConciergeBell className="inline" /> 24/7 Room Service
+              </li>
+              <li>
+                <FaWifi className="inline" /> High-Speed Wi-Fi
+              </li>
+            </ul>
+            <p className="mt-2 text-right">
+              <strong>Price:</strong> ₹
+              {Math.ceil(
+                hotel.room.gross_price *
+                  storeSearchQuery.rooms *
+                  storeSearchQuery.duration
+              )}{" "}
+              <span className="line-through text-gray-500 text-sm italic">
+                ₹
+                {Math.ceil(
+                  hotel.room.all_inclusive_price *
+                    storeSearchQuery.rooms *
+                    storeSearchQuery.duration
+                )}
+              </span>
+            </p>
+            <button className="mt-1 bg-blue-500 text-white py-1 px-4 rounded float-right hover:bg-blue-600 hover:scale-105 transition-all duration-150 shadow-md">
+              Book This Room
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Hall Section */}
+        {hotel.hall && (
+          <motion.div
+            className="bg-white rounded-xl shadow-xl flex items-center gap-2 w-fit"
+            initial={{ opacity: 0, translateX: 60 }}
+            animate={{ opacity: 1, translateX: 0 }}
+            transition={{ duration: 0.4, ease: "backOut" }}
+          >
+            <img
+              src={hall}
+              alt="Hall image"
+              className="h-[280px] rounded-l-xl"
+              loading="lazy"
+            />
+            <div className="border-l px-2 pr-4">
+              <h4 className="text-lg font-bold mb-1 mx-1 flex items-center gap-2 text-accent3">
+                🏢 Event Hall Details
+              </h4>
+              <div className="flex items-center gap-3">
+                <p>
+                  🏷️<strong>Type:</strong> {hotel.hall.type}
+                </p>
+                <p>
+                  <IoPeople className="inline" /> <strong>Capacity:</strong>{" "}
+                  {hotel.hall.capacity}
+                </p>
+              </div>
+              <p className="mt-2 font-medium">📋 Included Facilities:</p>
+              <ul className="ml-6 list-disc text-gray-600 text-sm">
+                <li>
+                  <FaRegSnowflake className="inline" /> Fully Air-Conditioned
+                </li>
+                <li>
+                  <FaRestroom className="inline" /> Attached Restroom
+                </li>
+                <li>
+                  <GiMicrophone className="inline" /> Stage & Podium Setup
+                </li>
+                <li>
+                  <GiForkKnifeSpoon className="inline" /> Catering Assistance
+                </li>
+                <li>
+                  <HiWrenchScrewdriver className="inline" /> 24/7 Maintenance
+                  Staff
+                </li>
+              </ul>
+              <p className="mt-2 text-right">
+                <strong>Price:</strong> ₹
+                {Math.ceil(
+                  hotel.hall.gross_price *
+                    storeSearchQuery.halls *
+                    storeSearchQuery.duration
+                )}{" "}
+                <span className="line-through text-gray-500 text-sm italic">
+                  ₹
+                  {Math.ceil(
+                    hotel.hall.all_inclusive_price *
+                      storeSearchQuery.halls *
+                      storeSearchQuery.duration
+                  )}
+                </span>
+              </p>
+              <button className="mt-1 bg-purple-500 text-white py-1 px-4 rounded float-right hover:bg-purple-600 hover:scale-105 transition-all duration-150 shadow-md">
+                Book This Hall
+              </button>
+            </div>
+          </motion.div>
         )}
-        {hotel.is_no_prepayment_block && (
-          <p className="px-3 py-[2px] mr-2 mb-2 rounded-full bg-green-200 text-green-600">
-            No Prepayment
-          </p>
-        )}
-        {hotel.cc_required && (
-          <p className="px-3 py-[2px] mr-2 mb-2 rounded-full bg-red-200 text-red-600">
-            Credit Card Required
-          </p>
-        )}
       </div>
-
-      {/* Check-In / Check-Out */}
-      <div className="my-4">
-        <p>
-          🕑 <strong>Check-in:</strong> {hotel.checkin.from} –{" "}
-          {hotel.checkin.until}
-        </p>
-        <p>
-          🕓 <strong>Check-out:</strong> {hotel.checkout.from} –{" "}
-          {hotel.checkout.until}
-        </p>
-      </div>
-
-      {/* Room Section */}
-      <div className="mt-6">
-        <h4 className="text-lg font-bold mb-2">🛏️ Room Details</h4>
-        <p>
-          🛋️ <strong>Type:</strong> {hotel.room.type}
-        </p>
-        <p>
-          <FaBed className="inline" /> <strong>Capacity:</strong>{" "}
-          {hotel.room.capacity} guests
-        </p>
-        <p className="mt-2 font-medium">📋 Included Services:</p>
-        <ul className="ml-6 list-disc text-gray-600">
-          <li>
-            <FaBed className="inline" /> Premium Queen-sized Bed
-          </li>
-          <li>
-            <FaBath className="inline" /> Ensuite Bathroom
-          </li>
-          <li>🌇 Private Balcony View</li>
-          <li>🛎️ 24/7 Room Service</li>
-          <li>
-            <FaWifi className="inline" /> High-Speed Wi-Fi
-          </li>
-        </ul>
-        <p className="mt-2">
-          💰 <strong>Price:</strong> ₹{hotel.room.gross_price}{" "}
-          <span className="line-through text-gray-500 text-sm ml-2">
-            ₹{hotel.room.all_inclusive_price}
-          </span>
-        </p>
-        <button className="mt-3 bg-blue-500 text-white py-1 px-4 rounded">
-          Book This Room
-        </button>
-      </div>
-
-      {/* Hall Section */}
-      <div className="mt-8">
-        <h4 className="text-lg font-bold mb-2">🏢 Event Hall Details</h4>
-        <p>
-          🏷️ <strong>Type:</strong> {hotel.hall.type}
-        </p>
-        <p>
-          🧍‍♂️ <strong>Capacity:</strong> {hotel.hall.capacity} guests
-        </p>
-        <p className="mt-2 font-medium">📋 Included Facilities:</p>
-        <ul className="ml-6 list-disc text-gray-600">
-          <li>❄️ Fully Air-Conditioned</li>
-          <li>🚻 Attached Restroom</li>
-          <li>🎤 Stage & Podium Setup</li>
-          <li>🍽️ Catering Assistance</li>
-          <li>👨‍🔧 24/7 Maintenance Staff</li>
-        </ul>
-        <p className="mt-2">
-          💰 <strong>Price:</strong> ₹{hotel.hall.gross_price}{" "}
-          <span className="line-through text-gray-500 text-sm ml-2">
-            ₹{hotel.hall.all_inclusive_price}
-          </span>
-        </p>
-        <button className="mt-3 bg-purple-600 text-white py-1 px-4 rounded">
-          Book This Hall
-        </button>
-      </div>
-    </>
+    </div>
   );
 };
 
@@ -178,6 +319,7 @@ const BookHotel = () => {
   const { id } = useParams();
   const [hotelData, setHotelData] = useState({});
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchHotel = async () => {
@@ -197,7 +339,31 @@ const BookHotel = () => {
     fetchHotel();
   }, []);
 
-  return loading ? <Loader /> : <HotelContent hotel={hotelData} />;
+  return loading ? (
+    <Loader />
+  ) : (
+    <>
+      {window.innerWidth > 480 && (
+        <div className="mt-3 w-[95vw] mx-auto">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            className="px-3 border-2 border-red-400 hover:border-red-600 rounded-xl text-red-400 hover:text-red-600 tracking-wide font-semibold text-lg shadow-md transition-all duration-300 mr-3"
+            onClick={() => navigate("/search")}
+          >
+            Back
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            className="px-3 border-2 border-red-400 hover:border-red-600 rounded-xl text-red-400 hover:text-red-600 tracking-wide font-semibold text-lg shadow-md transition-all duration-300"
+            onClick={() => navigate("/")}
+          >
+            Home
+          </motion.button>
+        </div>
+      )}
+      <HotelContent hotel={hotelData} />
+    </>
+  );
 };
 
 export default BookHotel;
