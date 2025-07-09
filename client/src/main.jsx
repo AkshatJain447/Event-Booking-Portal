@@ -8,6 +8,7 @@ import HotelList from "./components/HotelList/HotelList";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import Contact from "./components/Contact/Contact";
+import BookHotel from "./components/BookHotel/BookHotel";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <Contact />,
+      },
+      {
+        path: "/bookhotel/:id",
+        element: <BookHotel />,
       },
     ],
   },

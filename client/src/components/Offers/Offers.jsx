@@ -68,8 +68,8 @@ const Offers = () => {
     const fetchOffers = async () => {
       try {
         const response = await fetch(
-          "https://event-booking-portal.onrender.com/api/offers/"
-          // "http://localhost:5000/api/offers/"
+          // "https://event-booking-portal.onrender.com/api/offers/"
+          "http://localhost:5000/api/offers/"
         );
         const data = await response.json();
         setOffers(data.offers);

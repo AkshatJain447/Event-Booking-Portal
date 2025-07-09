@@ -2,12 +2,18 @@ import { motion, useAnimation, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { FaStar } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const HotelCard = ({ hotel }) => {
   const cardRef = useRef(null);
   const controls = useAnimation();
   const isInView = useInView(cardRef, { once: true });
   const storeSearchQuery = useSelector((state) => state.hotels.searchQuery);
+  const navigate = useNavigate();
+
+  const handleBookButton = (id) => {
+    navigate(`/bookhotel/${id}`);
+  };
 
   useEffect(() => {
     if (isInView) controls.start("visible");
@@ -43,12 +49,12 @@ const HotelCard = ({ hotel }) => {
           <div className="flex items-center gap-2">
             <h2
               className={`flex items-center gap-1 font-semibold ${
-                hotel.review_score >= 7.5 ? "text-blue-800" : "text-orange-500"
+                hotel.review_score >= 7 ? "text-blue-800" : "text-orange-500"
               }`}
             >
               <span
                 className={`text-white px-2 py-[2px] rounded-md text-sm shadow ${
-                  hotel.review_score >= 7.5 ? "bg-blue-800" : "bg-orange-500"
+                  hotel.review_score >= 7 ? "bg-blue-800" : "bg-orange-500"
                 }`}
               >
                 {hotel.review_score}
@@ -137,7 +143,10 @@ const HotelCard = ({ hotel }) => {
               </div>
             </div>
           )}
-          <button className="bg-blue-100 my-1 py-1 px-3 text-blue-500 rounded-full float-right hover:scale-105 transition-all duration-300 hover:shadow-md hover:bg-blue-200 hover:text-blue-600">
+          <button
+            className="bg-blue-100 my-1 py-1 px-3 text-blue-500 rounded-full float-right hover:scale-105 transition-all duration-300 hover:shadow-md hover:bg-blue-200 hover:text-blue-600"
+            onClick={() => handleBookButton(hotel._id)}
+          >
             Book Now
           </button>
         </div>

@@ -25,6 +25,7 @@ dist-ssr
 
 # server
 indian_hotels_data.json
+offers.json
 seeder.js
 .env
 
