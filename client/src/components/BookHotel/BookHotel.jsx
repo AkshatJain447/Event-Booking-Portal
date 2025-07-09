@@ -325,7 +325,8 @@ const BookHotel = () => {
     const fetchHotel = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/hotels/id/${id}`
+          `https://event-booking-portal.onrender.com/api/hotels/id/${id}`
+          // `http://localhost:5000/api/hotels/id/${id}`
         );
         const data = await response.json();
         setHotelData(data.hotel);
