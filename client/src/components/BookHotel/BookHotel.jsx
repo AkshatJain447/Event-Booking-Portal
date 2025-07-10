@@ -66,14 +66,14 @@ const HotelContent = ({ hotel }) => {
         animate={{ opacity: 1, translateY: 0 }}
         transition={{ duration: 0.5, ease: "backOut" }}
       >
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 lg:gap-4 items-center">
           <img
             src={hotel.max_photo_url}
             alt="Hotel Image"
-            className="col-span-2 md:rounded-l-xl h-[250px] md:h-[400px] w-full"
+            className="lg:col-span-2 lg:rounded-l-xl h-[250px] md:h-[400px] xl:h-[440px] w-full"
             loading="lazy"
           />
-          <div className="border-l pl-4 pr-2 my-3">
+          <div className="lg:border-l p-2 md:px-4 lg:pr-2 lg:pl-4 lg:my-3">
             <h2 className="text-3xl font-bold text-accent3 flex items-center gap-2">
               <FaDoorOpen className="text-7xl" /> {hotel.hotel_name}
             </h2>
@@ -164,7 +164,7 @@ const HotelContent = ({ hotel }) => {
         <h4 className="text-lg text-gray-600 font-semibold mb-1 flex items-center gap-2 ml-2">
           <FaConciergeBell className="text-accent3" /> Available Amenities
         </h4>
-        <ul className="flex gap-3">
+        <ul className="flex gap-3 flex-wrap">
           {hotel.amenities.map((amenity) => (
             <li
               key={amenity}
@@ -176,10 +176,10 @@ const HotelContent = ({ hotel }) => {
         </ul>
       </motion.div>
 
-      <div className="flex items-center gap-8">
+      <div className="flex flex-col lg:flex-row items-center gap-6 md:gap-8">
         {/* Room Section */}
         <motion.div
-          className="bg-white rounded-xl shadow-xl flex items-center gap-2 w-fit"
+          className="bg-white rounded-xl shadow-xl flex flex-col md:flex-row items-center gap-2 w-fit"
           initial={{ opacity: 0, translateX: 60 }}
           animate={{ opacity: 1, translateX: 0 }}
           transition={{ duration: 0.4, ease: "backOut" }}
@@ -187,7 +187,7 @@ const HotelContent = ({ hotel }) => {
           <img
             src={room}
             alt="Room Image"
-            className="h-[280px] rounded-l-xl"
+            className="h-[280px] md:rounded-l-xl"
             loading="lazy"
           />
           <div className="border-l px-2 pr-4">
@@ -236,7 +236,7 @@ const HotelContent = ({ hotel }) => {
                 )}
               </span>
             </p>
-            <button className="mt-1 bg-blue-500 text-white py-1 px-4 rounded float-right hover:bg-blue-600 hover:scale-105 transition-all duration-150 shadow-md">
+            <button className="mt-1 mb-2 md:mb-0  bg-blue-500 text-white py-1 px-4 rounded float-right hover:bg-blue-600 hover:scale-105 transition-all duration-150 shadow-md">
               Book This Room
             </button>
           </div>
@@ -245,7 +245,7 @@ const HotelContent = ({ hotel }) => {
         {/* Hall Section */}
         {hotel.hall && (
           <motion.div
-            className="bg-white rounded-xl shadow-xl flex items-center gap-2 w-fit"
+            className="bg-white rounded-xl shadow-xl flex flex-col md:flex-row items-center gap-2 w-fit"
             initial={{ opacity: 0, translateX: 60 }}
             animate={{ opacity: 1, translateX: 0 }}
             transition={{ duration: 0.4, ease: "backOut" }}
@@ -253,7 +253,7 @@ const HotelContent = ({ hotel }) => {
             <img
               src={hall}
               alt="Hall image"
-              className="h-[280px] rounded-l-xl"
+              className="h-[280px] md:rounded-l-xl"
               loading="lazy"
             />
             <div className="border-l px-2 pr-4">
@@ -304,7 +304,7 @@ const HotelContent = ({ hotel }) => {
                   )}
                 </span>
               </p>
-              <button className="mt-1 bg-purple-500 text-white py-1 px-4 rounded float-right hover:bg-purple-600 hover:scale-105 transition-all duration-150 shadow-md">
+              <button className="mt-1 mb-2 md:mb-0 bg-purple-500 text-white py-1 px-4 rounded float-right hover:bg-purple-600 hover:scale-105 transition-all duration-150 shadow-md">
                 Book This Hall
               </button>
             </div>
