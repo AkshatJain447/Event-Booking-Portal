@@ -4,10 +4,13 @@ import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { IoReorderThree } from "react-icons/io5";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { setAuthType, setModalState } from "../../store/userAuthSlice";
 
 const Navbar = () => {
   const [windowWidth, setWindowWidth] = useState();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
@@ -36,10 +39,22 @@ const Navbar = () => {
             Contact Us
             <FaPhone />
           </li>
-          <li className=" hover:scale-105 border border-transparent hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150">
+          <li
+            className=" hover:scale-105 border border-transparent hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150"
+            onClick={() => {
+              dispatch(setModalState(true));
+              dispatch(setAuthType("Register"));
+            }}
+          >
             Register
           </li>
-          <li className="flex items-center gap-1 hover:scale-105 border border-transparent hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150">
+          <li
+            className="flex items-center gap-1 hover:scale-105 border border-transparent hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150"
+            onClick={() => {
+              dispatch(setModalState(true));
+              dispatch(setAuthType("Login"));
+            }}
+          >
             LogIn
             <CiLogin />
           </li>
