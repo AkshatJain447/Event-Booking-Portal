@@ -77,7 +77,7 @@ const Hero = () => {
         transition={{ duration: 0.5, ease: "backOut" }}
       >
         {windowWidth > 750 ? (
-          <ul className=" -translate-y-10 flex justify-evenly items-center gap-10 bg-white text-primaryText p-2 rounded-lg w-fit m-auto px-8 cursor-pointer shadow-md">
+          <ul className="-translate-y-10 flex justify-evenly items-center gap-10 bg-white text-primaryText p-2 rounded-lg w-fit m-auto px-8 cursor-pointer shadow-md">
             {categories.map((type) => (
               <li
                 key={type.id}

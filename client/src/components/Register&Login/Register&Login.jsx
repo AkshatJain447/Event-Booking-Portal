@@ -330,8 +330,8 @@ const Login = () => {
 
 const Modal = ({ children }) => {
   return (
-    <div className="z-50 h-[100vh] w-[100vw] bg-[#0000007e] fixed top-0 left-0 flex items-center justify-center">
-      <div className="rounded-xl bg-white p-4 w-[95vw] md:w-2/3 lg:w-1/3 shadow-xl">
+    <div className="z-50 h-[100vh] w-[100vw] bg-[#0000007e] fixed top-0 left-0 flex items-start md:items-center justify-center">
+      <div className="rounded-xl bg-white p-4 w-[95vw] mt-8 md:w-2/3 lg:w-1/3 shadow-xl">
         {children}
       </div>
     </div>
