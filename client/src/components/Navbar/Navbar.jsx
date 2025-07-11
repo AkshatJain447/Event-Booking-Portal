@@ -1,8 +1,9 @@
-import { FaPhone, FaHome } from "react-icons/fa";
+import { FaPhone, FaHome, FaUserSecret } from "react-icons/fa";
 import { CiLogin, CiLogout } from "react-icons/ci";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { IoReorderThree } from "react-icons/io5";
+import { FaUserTie } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuthType, setModalState, setUser } from "../../store/userAuthSlice";
@@ -87,6 +88,20 @@ const Navbar = () => {
               LogIn
               <CiLogin />
             </li>
+          )}
+          {user?.role === "user" ? (
+            <li className="ml-1 hover:scale-105 border border-gray-400 hover:border-gray-700 rounded-full hover:bg-gray-200 py-2 px-3 duration-150 text-2xl">
+              <FaUserTie />
+            </li>
+          ) : (
+            ""
+          )}
+          {user?.role === "admin" ? (
+            <li className="ml-1 hover:scale-105 border border-gray-400 hover:border-gray-700 rounded-full hover:bg-gray-200 py-2 px-3 duration-150 text-2xl">
+              <FaUserSecret />
+            </li>
+          ) : (
+            ""
           )}
         </ul>
       ) : (

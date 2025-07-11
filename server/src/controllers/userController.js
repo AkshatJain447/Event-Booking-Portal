@@ -1,0 +1,37 @@
+import User from "../models/User.js";
+
+export const bookHotel = async (req, res) => {
+  const { hotelId, duration, type } = req.body;
+
+  // Accessing user from req.user set by middleware
+  const userId = req.user.id;
+
+  if (!hotelId || !duration || !type) {
+    return res
+      .status(400)
+      .json({ message: "Incomplete booking data", success: false });
+  }
+
+  const bookingData = { hotelId, duration, type };
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $push: { bookings: bookingData } },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res
+        .status(404)
+        .json({ message: "User not found", success: false });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Hotel booked successfully", success: true });
+  } catch (error) {
+    console.error("Booking Error:", error);
+    res.status(500).json({ message: "Internal server error", success: false });
+  }
+};

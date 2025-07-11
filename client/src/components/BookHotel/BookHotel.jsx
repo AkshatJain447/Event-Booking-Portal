@@ -21,6 +21,7 @@ import {
   GiMicrophone,
   GiForkKnifeSpoon,
   GiEmptyHourglass,
+  GiSofa,
 } from "react-icons/gi";
 import { HiWrenchScrewdriver } from "react-icons/hi2";
 import { MdBalcony } from "react-icons/md";
@@ -54,8 +55,137 @@ const Loader = () => {
   );
 };
 
+// Booking modal
+const BookingModal = ({ hotel, type, onClose }) => {
+  const [duration, setDuration] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  const handleConfirm = async () => {
+    if (duration < 1) {
+      toast.error("Duration must be at least 1 day");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const res = await fetch(
+        "https://event-booking-portal.onrender.com/api/users/bookhotel",
+        // "http://localhost:5000/api/users/bookhotel",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({
+            hotelId: hotel._id,
+            duration: Number(duration),
+            type,
+          }),
+        }
+      );
+
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Booking confirmed!");
+        onClose();
+      } else {
+        toast.error(data.message || "Failed to book.");
+      }
+    } catch (error) {
+      toast.error("Error while booking. Try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const price =
+    type === "room"
+      ? hotel.room.gross_price * duration
+      : hotel.hall.gross_price * duration;
+  const maxCapacity =
+    type === "room" ? hotel.room.total_rooms : hotel.hall.total_halls;
+
+  return (
+    <div className="bg-white shadow-xl rounded-xl p-5 max-w-md mx-auto">
+      <div className="mb-3">
+        <h2 className="text-xl font-bold mb-1">{hotel.hotel_name}</h2>
+        <p className="text-sm text-gray-600">{hotel.address}</p>
+      </div>
+
+      <div className="border-t pt-3 text-gray-600 mb-1">
+        <h4 className="font-semibold flex items-center gap-2">
+          {type === "room" ? <FaBed /> : "🏢"}{" "}
+          {type === "room" ? "Room" : "Event Hall"} Details
+        </h4>
+        <div className="border rounded-lg px-2">
+          <div className="flex flex-row justify-between">
+            <p className="flex flex-row gap-1 items-center">
+              <GiSofa /> Type: {hotel[type].type}
+            </p>
+            <p className="flex items-center gap-1">
+              <IoPeople /> Capacity: {hotel[type].capacity}
+            </p>
+          </div>
+          <p>
+            Price: ₹{hotel[type].gross_price} /{" "}
+            {type === "room" ? "night" : "day"}
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <label
+          htmlFor="duration"
+          className="text-sm font-medium text-gray-700 mr-2"
+        >
+          Duration ({type === "room" ? "nights" : "days"}):
+        </label>
+        <input
+          type="number"
+          id="duration"
+          min={1}
+          value={duration}
+          onChange={(e) => setDuration(e.target.value)}
+          max={maxCapacity}
+          className=" border border-gray-300 px-3 py-1 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
+
+      <div className="flex flex-row justify-between text-lg font-semibold mb-3 mt-2 border-t pt-2">
+        Total Price: <span>₹ {price}</span>
+      </div>
+
+      <div className="flex justify-end gap-3">
+        <button
+          className="px-4 py-2 border border-gray-400 rounded hover:bg-red-600 hover:text-white transition-all duration-150 shadow-md"
+          onClick={onClose}
+          disabled={loading}
+        >
+          Cancel
+        </button>
+        <button
+          className="px-4 py-2 border border-gray-400 hover:text-white rounded hover:bg-blue-700 disabled:opacity-60 shadow-md"
+          onClick={handleConfirm}
+          disabled={loading}
+        >
+          {loading ? "Booking..." : "Confirm Booking"}
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const HotelContent = ({ hotel }) => {
   const storeSearchQuery = useSelector((state) => state.hotels.searchQuery);
+  const [showModal, setShowModal] = useState(false);
+  const [bookingType, setBookingType] = useState(null);
+
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [showModal]);
 
   return (
     <div className="w-[95vw] mb-4 mt-3 md:mb-6 lg:mb-8 mx-auto">
@@ -236,7 +366,13 @@ const HotelContent = ({ hotel }) => {
                 )}
               </span>
             </p>
-            <button className="mt-1 mb-2 md:mb-0  bg-blue-500 text-white py-1 px-4 rounded float-right hover:bg-blue-600 hover:scale-105 transition-all duration-150 shadow-md">
+            <button
+              className="mt-1 mb-2 md:mb-0  bg-blue-500 text-white py-1 px-4 rounded float-right hover:bg-blue-600 hover:scale-105 transition-all duration-150 shadow-md"
+              onClick={() => {
+                setShowModal(true);
+                setBookingType("room"); // or "hall"
+              }}
+            >
               Book This Room
             </button>
           </div>
@@ -304,13 +440,28 @@ const HotelContent = ({ hotel }) => {
                   )}
                 </span>
               </p>
-              <button className="mt-1 mb-2 md:mb-0 bg-purple-500 text-white py-1 px-4 rounded float-right hover:bg-purple-600 hover:scale-105 transition-all duration-150 shadow-md">
+              <button
+                className="mt-1 mb-2 md:mb-0 bg-purple-500 text-white py-1 px-4 rounded float-right hover:bg-purple-600 hover:scale-105 transition-all duration-150 shadow-md"
+                onClick={() => {
+                  setShowModal(true);
+                  setBookingType("hall");
+                }}
+              >
                 Book This Hall
               </button>
             </div>
           </motion.div>
         )}
       </div>
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <BookingModal
+            hotel={hotel}
+            type={bookingType}
+            onClose={() => setShowModal(false)}
+          />
+        </div>
+      )}
     </div>
   );
 };

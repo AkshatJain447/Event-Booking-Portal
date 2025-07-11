@@ -44,7 +44,7 @@ const Register = () => {
     try {
       const response = await fetch(
         `https://event-booking-portal.onrender.com/api/users/register`,
-        //  "http://localhost:5000/api/users/register"
+        // "http://localhost:5000/api/users/register",
         {
           method: "POST",
           headers: {
