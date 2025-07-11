@@ -1,12 +1,73 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuthType, setModalState } from "../../store/userAuthSlice";
+import { setAuthType, setModalState, setUser } from "../../store/userAuthSlice";
 import { MdCancelPresentation } from "react-icons/md";
 import { AiOutlineLogin } from "react-icons/ai";
 import { VscPersonAdd } from "react-icons/vsc";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const [userDetails, setUserDetails] = useState({
+    name: "",
+    email: "",
+    password: "",
+    cnfPassword: "",
+  });
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleRegisterSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      !userDetails.name.trim() ||
+      !userDetails.email.trim() ||
+      !userDetails.password.trim() ||
+      !userDetails.cnfPassword.trim()
+    ) {
+      toast.error("Don't leave any field empty!");
+      return;
+    }
+    const validateEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userDetails.email);
+    if (!validateEmail) {
+      toast.error("Hmm, that email doesn’t look right");
+      return;
+    }
+    if (userDetails.password.length < 8) {
+      toast.error("Oops! Password needs 8+ characters");
+      return;
+    }
+    if (userDetails.password !== userDetails.cnfPassword) {
+      toast.error("Passwords don’t match — try again");
+      return;
+    }
+    try {
+      const response = await fetch(
+        `https://event-booking-portal.onrender.com/api/users/register`,
+        //  "http://localhost:5000/api/users/register"
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userDetails),
+        }
+      );
+      const data = await response.json();
+      if (data.success) {
+        toast.success("Registration successfully! Please login to proceed");
+        navigate("/");
+      } else {
+        toast.error(data.message || "Registration failed");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in user registration!!");
+    } finally {
+      dispatch(setModalState(false));
+    }
+  };
+
   return (
     <>
       {/* Header with close icon */}
@@ -36,6 +97,9 @@ const Register = () => {
             type="text"
             placeholder="Akshat Jain"
             className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) =>
+              setUserDetails((prev) => ({ ...prev, name: e.target.value }))
+            }
           />
         </div>
 
@@ -52,6 +116,12 @@ const Register = () => {
             type="email"
             placeholder="akshatjain@example.com"
             className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) =>
+              setUserDetails((prev) => ({
+                ...prev,
+                email: e.target.value.toLowerCase(),
+              }))
+            }
           />
         </div>
 
@@ -68,6 +138,9 @@ const Register = () => {
             type="password"
             placeholder="Enter a strong password"
             className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) =>
+              setUserDetails((prev) => ({ ...prev, password: e.target.value }))
+            }
           />
         </div>
 
@@ -84,6 +157,12 @@ const Register = () => {
             type="password"
             placeholder="Re-enter your password"
             className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) =>
+              setUserDetails((prev) => ({
+                ...prev,
+                cnfPassword: e.target.value,
+              }))
+            }
           />
         </div>
 
@@ -91,6 +170,7 @@ const Register = () => {
         <button
           type="submit"
           className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md font-medium transition-all duration-300 flex items-center justify-center gap-1"
+          onClick={handleRegisterSubmit}
         >
           <VscPersonAdd className="text-xl" />
           Register
@@ -112,6 +192,58 @@ const Register = () => {
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [loginDetails, setLoginDetails] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!loginDetails.email.trim() || !loginDetails.password.trim()) {
+      toast.error("Don't leave any field empty!");
+      return;
+    }
+
+    const validateEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginDetails.email);
+    if (!validateEmail) {
+      toast.error("Hmm, that email doesn’t look right");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://event-booking-portal.onrender.com/api/users/login`,
+        // "http://localhost:5000/api/users/login",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(loginDetails),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success("Login successful!");
+        dispatch(setUser(data.userData));
+        navigate("/");
+      } else {
+        toast.error(data.message || "Login failed");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in user login!!");
+    } finally {
+      dispatch(setModalState(false));
+    }
+  };
+
   return (
     <>
       {/* Header */}
@@ -127,7 +259,10 @@ const Login = () => {
       </div>
 
       {/* Login Form */}
-      <form className="bg-white border border-gray-200 shadow-md rounded-xl px-4 py-5 space-y-4">
+      <form
+        className="bg-white border border-gray-200 shadow-md rounded-xl px-4 py-5 space-y-4"
+        onSubmit={handleLoginSubmit}
+      >
         {/* Email */}
         <div className="flex flex-col">
           <label
@@ -141,6 +276,12 @@ const Login = () => {
             type="email"
             placeholder="akshatjain@example.com"
             className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) =>
+              setLoginDetails((prev) => ({
+                ...prev,
+                email: e.target.value.toLowerCase(),
+              }))
+            }
           />
         </div>
 
@@ -157,6 +298,9 @@ const Login = () => {
             type="password"
             placeholder="Enter your password"
             className="border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) =>
+              setLoginDetails((prev) => ({ ...prev, password: e.target.value }))
+            }
           />
         </div>
 

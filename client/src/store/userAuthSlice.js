@@ -5,6 +5,7 @@ const userAuth = createSlice({
   initialState: {
     modalState: false,
     authType: "Register",
+    user: {},
   },
   reducers: {
     setModalState: (state, action) => {
@@ -13,8 +14,11 @@ const userAuth = createSlice({
     setAuthType: (state, action) => {
       state.authType = action.payload;
     },
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
   },
 });
 
-export const { setModalState, setAuthType } = userAuth.actions;
+export const { setModalState, setAuthType, setUser } = userAuth.actions;
 export default userAuth.reducer;

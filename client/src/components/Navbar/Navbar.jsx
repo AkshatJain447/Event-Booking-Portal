@@ -1,20 +1,40 @@
 import { FaPhone, FaHome } from "react-icons/fa";
-import { CiLogin } from "react-icons/ci";
+import { CiLogin, CiLogout } from "react-icons/ci";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { IoReorderThree } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setAuthType, setModalState } from "../../store/userAuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuthType, setModalState, setUser } from "../../store/userAuthSlice";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const [windowWidth, setWindowWidth] = useState();
+  const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
   }, [window.innerWidth]);
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(
+        `https://event-booking-portal.onrender.com/api/users/logout`,
+        // "http://localhost:5000/api/users/logout",
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
+      const data = await response.json();
+      if (data.success) {
+        toast.success("User Logged out successfully");
+        dispatch(setUser({}));
+      }
+    } catch (error) {}
+  };
 
   return (
     <motion.div
@@ -48,16 +68,26 @@ const Navbar = () => {
           >
             Register
           </li>
-          <li
-            className="flex items-center gap-1 hover:scale-105 border border-transparent hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150"
-            onClick={() => {
-              dispatch(setModalState(true));
-              dispatch(setAuthType("Login"));
-            }}
-          >
-            LogIn
-            <CiLogin />
-          </li>
+          {user?.name ? (
+            <li
+              className="flex items-center gap-1 hover:scale-105 border border-transparent hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150"
+              onClick={handleLogout}
+            >
+              LogOut
+              <CiLogout />
+            </li>
+          ) : (
+            <li
+              className="flex items-center gap-1 hover:scale-105 border border-transparent hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150"
+              onClick={() => {
+                dispatch(setModalState(true));
+                dispatch(setAuthType("Login"));
+              }}
+            >
+              LogIn
+              <CiLogin />
+            </li>
+          )}
         </ul>
       ) : (
         <div className="text-3xl hover:bg-gray-200 rounded-full cursor-pointer">
