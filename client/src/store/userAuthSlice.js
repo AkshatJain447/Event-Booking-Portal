@@ -6,6 +6,7 @@ const userAuth = createSlice({
     modalState: false,
     authType: "Register",
     user: {},
+    isDashboard: "",
   },
   reducers: {
     setModalState: (state, action) => {
@@ -17,8 +18,12 @@ const userAuth = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
+    setIsDashboard: (state, action) => {
+      state.isDashboard = action.payload;
+    },
   },
 });
 
-export const { setModalState, setAuthType, setUser } = userAuth.actions;
+export const { setModalState, setAuthType, setUser, setIsDashboard } =
+  userAuth.actions;
 export default userAuth.reducer;

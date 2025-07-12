@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { setUser } from "../store/userAuthSlice";
 
 function App() {
-  const user = useSelector((state) => state.user.user);
+  const isDashboard = useSelector((state) => state.user.isDashboard);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,9 +38,12 @@ function App() {
 
   return (
     <div>
-      <div id="home" className="pt-2 w-full">
+      <div
+        id="home"
+        className={`h-fit pt-2 w-full bg-cover bg-no-repeat flex flex-col items-center gap-10 md:gap-20 justify-between`}
+      >
         <Navbar />
-        <Hero />
+        {!isDashboard && <Hero />}
       </div>
       <RegisternLogin />
       <Outlet />

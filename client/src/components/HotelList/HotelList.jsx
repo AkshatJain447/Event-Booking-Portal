@@ -22,7 +22,7 @@ const EmptyMsg = () => {
 
   return (
     <motion.h1
-      className="bg-white text-accent1 text-4xl font-bold m-14 mt-4 rounded-lg shadow-lg py-10 flex flex-wrap text-center justify-center items-center"
+      className="bg-white text-accent1 text-4xl font-bold m-14 md:mt-4 rounded-lg shadow-lg py-10 flex flex-wrap text-center justify-center items-center"
       initial={{ opacity: 0, scale: 0.5 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{

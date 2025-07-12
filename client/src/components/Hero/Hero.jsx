@@ -7,6 +7,7 @@ import socialIcon from "../../assets/bar.png";
 import privateIcon from "../../assets/party.png";
 import leisureIcon from "../../assets/travel-agent.png";
 import SearchBar from "../SearchBar/SearchBar";
+import { useDispatch } from "react-redux";
 
 const categories = [
   {
@@ -59,6 +60,8 @@ const Hero = () => {
   const [active, setActive] = useState("Weddings");
   const [acticeComponent, setActiveComponent] = useState(categories[0]);
   const [windowWidth, setWindowWidth] = useState();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     setWindowWidth(window.innerWidth);
   }, [window.innerWidth]);
@@ -69,11 +72,11 @@ const Hero = () => {
   };
 
   return (
-    <div className="md:mt-10">
+    <div className="mb-10">
       <motion.div
         className="bg-white w-fit m-auto rounded-lg"
-        initial={{ opacity: 0, translateY: 130 }}
-        animate={{ opacity: 1, translateY: 35 }}
+        initial={{ opacity: 0, translateY: 100 }}
+        animate={{ opacity: 1, translateY: 0 }}
         transition={{ duration: 0.5, ease: "backOut" }}
       >
         {windowWidth > 750 ? (

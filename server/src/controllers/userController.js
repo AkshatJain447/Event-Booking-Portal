@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import Hotel from "../models/Hotel.js";
 
 export const bookHotel = async (req, res) => {
   const { hotelId, duration, type } = req.body;
@@ -56,5 +56,18 @@ export const userInfo = async (req, res) => {
   } catch (error) {
     console.error("User info error:", error);
     res.status(500).json({ message: "Internal server error", success: false });
+  }
+};
+
+export const findHotelById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const hotelData = await Hotel.findById(id).select(
+      "hotel_name address room hall -_id"
+    );
+    res.status(200).json({ message: "Hotel found", hotelData });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };

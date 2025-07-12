@@ -27,6 +27,7 @@ const Navlist = ({ isMobile, setIsOpen }) => {
       const data = await response.json();
       if (data.success) {
         toast.success("User Logged out successfully");
+        navigate("/");
         dispatch(setUser({}));
       }
     } catch (error) {
@@ -43,9 +44,12 @@ const Navlist = ({ isMobile, setIsOpen }) => {
           ? "absolute top-16 right-3 bg-white shadow-md rounded-lg text-sm px-3 py-2 flex flex-col-reverse items-end gap-1 z-40"
           : "flex md:flex-row items-center md:gap-2 mr-1 text-lg"
       }`}
+      onClick={() => {
+        isMobile && setIsOpen(false);
+      }}
     >
       <li
-        className="flex items-center gap-1 hover:scale-105 border border-transparent hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150"
+        className="flex items-center gap-1 hover:scale-105 cursor-pointer border border-transparent hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150"
         onClick={() => navigate("/contact")}
       >
         Contact Us
@@ -53,7 +57,7 @@ const Navlist = ({ isMobile, setIsOpen }) => {
       </li>
       {!user?.name ? (
         <li
-          className=" hover:scale-105 border border-transparent hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150"
+          className=" hover:scale-105 border border-transparent cursor-pointer hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150"
           onClick={() => {
             dispatch(setModalState(true));
             dispatch(setAuthType("Register"));
@@ -66,7 +70,7 @@ const Navlist = ({ isMobile, setIsOpen }) => {
       )}
       {user?.name ? (
         <li
-          className="flex items-center gap-1 hover:scale-105 border border-transparent hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150"
+          className="flex items-center gap-1 hover:scale-105 border border-transparent hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150 cursor-pointer"
           onClick={handleLogout}
         >
           LogOut
@@ -74,7 +78,7 @@ const Navlist = ({ isMobile, setIsOpen }) => {
         </li>
       ) : (
         <li
-          className="flex items-center gap-1 hover:scale-105 border border-transparent hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150"
+          className="flex items-center gap-1 hover:scale-105 border border-transparent hover:border-gray-500 hover:rounded-full hover:bg-gray-200 py-1 px-3 duration-150 cursor-pointer"
           onClick={() => {
             dispatch(setModalState(true));
             dispatch(setAuthType("Login"));
@@ -85,7 +89,12 @@ const Navlist = ({ isMobile, setIsOpen }) => {
         </li>
       )}
       {user?.role === "user" ? (
-        <li className="ml-1 hover:scale-105 border border-gray-400 hover:border-gray-700 rounded-full hover:bg-gray-200 py-2 px-3 duration-150 text-xl md:text-2xl">
+        <li
+          className="ml-1 hover:scale-105 border border-gray-400 hover:border-gray-700 rounded-full hover:bg-gray-200 py-2 px-3 duration-150 text-xl md:text-2xl cursor-pointer"
+          onClick={() => {
+            navigate("/userdashboard");
+          }}
+        >
           <FaUserTie />
         </li>
       ) : (

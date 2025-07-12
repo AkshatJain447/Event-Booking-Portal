@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import { store } from "./store/store";
 import Contact from "./components/Contact/Contact";
 import BookHotel from "./components/BookHotel/BookHotel";
+import UserDashboard from "./components/UserDashboard/UserDashboard";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "/bookhotel/:id",
         element: <BookHotel />,
+      },
+      {
+        path: "/userdashboard",
+        element: <UserDashboard />,
       },
     ],
   },

@@ -232,7 +232,7 @@ const Login = () => {
       if (data.success) {
         toast.success("Login successful!");
         dispatch(setUser(data.userData));
-        navigate("/");
+        navigate("/userdashboard");
       } else {
         toast.error(data.message || "Login failed");
       }

@@ -78,7 +78,7 @@ const BookingModal = ({ hotel, type, onClose }) => {
           body: JSON.stringify({
             hotelId: hotel._id,
             duration: Number(duration),
-            type,
+            type: type === "room" ? "Room" : "Hall",
           }),
         }
       );
@@ -101,8 +101,6 @@ const BookingModal = ({ hotel, type, onClose }) => {
     type === "room"
       ? hotel.room.gross_price * duration
       : hotel.hall.gross_price * duration;
-  const maxCapacity =
-    type === "room" ? hotel.room.total_rooms : hotel.hall.total_halls;
 
   return (
     <div className="bg-white shadow-xl rounded-xl p-5 max-w-md mx-auto">
@@ -145,7 +143,7 @@ const BookingModal = ({ hotel, type, onClose }) => {
           min={1}
           value={duration}
           onChange={(e) => setDuration(e.target.value)}
-          max={maxCapacity}
+          max={10}
           className=" border border-gray-300 px-3 py-1 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
       </div>
