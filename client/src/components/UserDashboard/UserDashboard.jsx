@@ -81,6 +81,9 @@ const UserDashboard = () => {
 
   useEffect(() => {
     dispatch(setIsDashboard(true));
+    if (!user?.name) {
+      navigate("/");
+    }
     return () => dispatch(setIsDashboard(false));
   }, []);
 
