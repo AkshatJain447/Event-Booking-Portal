@@ -1,5 +1,6 @@
 import { motion, useAnimation, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 import { FaStar } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -9,10 +10,35 @@ const HotelCard = ({ hotel }) => {
   const controls = useAnimation();
   const isInView = useInView(cardRef, { once: true });
   const storeSearchQuery = useSelector((state) => state.hotels.searchQuery);
+  const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
 
-  const handleBookButton = (id) => {
-    navigate(`/bookhotel/${id}`);
+  const handleBookButton = async (id) => {
+    if (user.role === "admin") {
+      try {
+        const res = await fetch(
+          `https://event-booking-portal.onrender.com/api/admin/addhotel/${id}`,
+          // `http://localhost:5000/api/admin/addhotel/${id}`,
+          {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const data = await res.json();
+        if (data.success) {
+          toast.success(data.message);
+        } else {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        toast.error("Error while booking");
+      }
+    } else {
+      navigate(`/bookhotel/${id}`);
+    }
   };
 
   useEffect(() => {

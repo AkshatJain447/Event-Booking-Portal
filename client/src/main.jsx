@@ -10,6 +10,7 @@ import { store } from "./store/store";
 import Contact from "./components/Contact/Contact";
 import BookHotel from "./components/BookHotel/BookHotel";
 import UserDashboard from "./components/UserDashboard/UserDashboard";
+import AdminDashboard from "./components/AdminDashboard/AdminDashboard";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/userdashboard",
         element: <UserDashboard />,
+      },
+      {
+        path: "/admindashboard",
+        element: <AdminDashboard />,
       },
     ],
   },

@@ -232,7 +232,11 @@ const Login = () => {
       if (data.success) {
         toast.success("Login successful!");
         dispatch(setUser(data.userData));
-        navigate("/userdashboard");
+        if (data.userData.role === "admin") {
+          navigate("/admindashboard");
+        } else {
+          navigate("/userdashboard");
+        }
       } else {
         toast.error(data.message || "Login failed");
       }

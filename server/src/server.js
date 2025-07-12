@@ -9,6 +9,7 @@ import offerRouter from "./routes/offerRoute.js";
 import contactRouter from "./routes/contactRoute.js";
 import authRouter from "./routes/authRoute.js";
 import userRouter from "./routes/userRoute.js";
+import adminRouter from "./routes/adminRoute.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/users", authRouter);
+app.use("/api/admin", adminRouter);
 app.use("/api/users", userRouter);
 app.use("/api/offers", offerRouter);
 app.use("/api/hotels", hotelRouter);

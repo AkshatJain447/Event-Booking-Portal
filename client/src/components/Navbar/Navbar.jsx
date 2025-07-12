@@ -101,7 +101,12 @@ const Navlist = ({ isMobile, setIsOpen }) => {
         ""
       )}
       {user?.role === "admin" ? (
-        <li className="ml-1 hover:scale-105 border border-gray-400 hover:border-gray-700 rounded-full hover:bg-gray-200 py-2 px-3 duration-150 text-xl md:text-2xl">
+        <li
+          className="ml-1 hover:scale-105 border border-gray-400 hover:border-gray-700 rounded-full hover:bg-gray-200 py-2 px-3 duration-150 text-xl md:text-2xl"
+          onClick={() => {
+            navigate("/admindashboard");
+          }}
+        >
           <FaUserSecret />
         </li>
       ) : (
