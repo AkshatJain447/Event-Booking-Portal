@@ -1,3 +1,4 @@
+import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 export const bookHotel = async (req, res) => {
@@ -32,6 +33,28 @@ export const bookHotel = async (req, res) => {
       .json({ message: "Hotel booked successfully", success: true });
   } catch (error) {
     console.error("Booking Error:", error);
+    res.status(500).json({ message: "Internal server error", success: false });
+  }
+};
+
+export const userInfo = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const userDoc = await User.findById(userId).select("-password");
+
+    if (!userDoc) {
+      return res
+        .status(404)
+        .json({ message: "User not found", success: false });
+    }
+
+    res.status(200).json({
+      message: "User found",
+      success: true,
+      user: userDoc,
+    });
+  } catch (error) {
+    console.error("User info error:", error);
     res.status(500).json({ message: "Internal server error", success: false });
   }
 };
