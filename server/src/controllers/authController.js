@@ -96,6 +96,7 @@ export const loginController = async (req, res) => {
     res.cookie("authToken", userToken, {
       httpOnly: true,
       secure: true,
+      sameSite: "None",
       maxAge: 60 * 60 * 1000,
     });
     const userData = {
@@ -115,6 +116,7 @@ export const logoutController = (req, res) => {
   res.cookie("authToken", "", {
     httpOnly: true,
     secure: true,
+    sameSite: "None",
     maxAge: 0,
   });
   res.status(200).json({ message: "User loggedOut", success: true });
