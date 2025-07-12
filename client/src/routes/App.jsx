@@ -40,7 +40,7 @@ function App() {
     <div>
       <div
         id="home"
-        className={`h-fit pt-2 w-full bg-cover bg-no-repeat flex flex-col items-center gap-10 md:gap-20 justify-between`}
+        className={`h-fit py-2 w-full bg-cover bg-no-repeat flex flex-col items-center gap-10 md:gap-20 justify-between`}
       >
         <Navbar />
         {!isDashboard && <Hero />}

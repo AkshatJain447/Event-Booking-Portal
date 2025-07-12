@@ -9,7 +9,9 @@ import { useNavigate } from "react-router-dom";
 import { setIsDashboard } from "../../store/userAuthSlice";
 
 const BookingCard = ({ hotelData }) => {
-  const [bookingData, setBookingData] = useState("");
+  const [bookingData, setBookingData] = useState({});
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,17 +24,25 @@ const BookingCard = ({ hotelData }) => {
       } catch (error) {
         console.log(error);
         toast.error("Failed to fetch booking data");
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
-  }, []);
+  }, [hotelData.hotelId]);
 
   const totalAmount =
     hotelData.type === "room"
       ? hotelData.duration * bookingData.room?.gross_price
       : hotelData.duration * bookingData.hall?.gross_price;
 
-  return (
+  return loading ? (
+    <div className="my-4 bg-gray-50 border border-gray-200 rounded-xl shadow-md p-4">
+      <p className="animate-pulse duration-75 transition-all text-center">
+        Fetching User Bookings...
+      </p>
+    </div>
+  ) : (
     <motion.div
       initial={{ opacity: 0, translateX: 60 }}
       animate={{ opacity: 1, translateX: 0 }}
