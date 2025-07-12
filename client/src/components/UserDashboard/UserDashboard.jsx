@@ -14,8 +14,8 @@ const BookingCard = ({ hotelData }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          // `http://event-booking-portal.onrender.com/api/users/findhotel/${hotelData.hotelId}`
-          `http://localhost:5000/api/users/findhotel/${hotelData.hotelId}`
+          `http://event-booking-portal.onrender.com/api/users/findhotel/${hotelData.hotelId}`
+          // `http://localhost:5000/api/users/findhotel/${hotelData.hotelId}`
         );
         const data = await response.json();
         setBookingData(data.hotelData);
