@@ -30,10 +30,48 @@ export const bookHotel = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Hotel booked successfully", success: true });
+      .json({
+        message: "Hotel booked successfully",
+        user: updatedUser,
+        success: true,
+      });
   } catch (error) {
     console.error("Booking Error:", error);
     res.status(500).json({ message: "Internal server error", success: false });
+  }
+};
+
+export const removeHotel = async (req, res) => {
+  const hotelId = req.params.id;
+  const userId = req.user.id;
+
+  try {
+    const pullCondition =
+      req.user.role === "admin" ? { hotelId: hotelId } : { _id: hotelId };
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        $pull: {
+          bookings: pullCondition,
+        },
+      },
+      { new: true }
+    ).select("-password");
+
+    if (!updatedUser) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Hotel removed from bookings",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("Error removing hotel from bookings:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 

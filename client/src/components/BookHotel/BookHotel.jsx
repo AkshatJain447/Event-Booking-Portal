@@ -27,7 +27,8 @@ import { HiWrenchScrewdriver } from "react-icons/hi2";
 import { MdBalcony } from "react-icons/md";
 import room from "../../assets/Room.jpg";
 import hall from "../../assets/hall.jpg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../store/userAuthSlice";
 
 const Loader = () => {
   return (
@@ -59,6 +60,7 @@ const Loader = () => {
 const BookingModal = ({ hotel, type, onClose }) => {
   const [duration, setDuration] = useState(1);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const handleConfirm = async () => {
     if (duration < 1) {
@@ -86,6 +88,7 @@ const BookingModal = ({ hotel, type, onClose }) => {
       const data = await res.json();
       if (data.success) {
         toast.success("Booking confirmed!");
+        dispatch(setUser(data.user));
         onClose();
       } else {
         toast.error(data.message || "Failed to book.");

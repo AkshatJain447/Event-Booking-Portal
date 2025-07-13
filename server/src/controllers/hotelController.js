@@ -71,19 +71,21 @@ export const getHotelByCity = async (req, res) => {
 // Create a new hotel
 export const createHotel = async (req, res) => {
   try {
-    const newHotel = req.body.hotel;
+    const newHotel = req.body;
     if (!newHotel) {
-      return res.status(400).json({ message: "Hotel data is required" });
+      return res
+        .status(400)
+        .json({ message: "Hotel data is required", success: false });
     }
     const hotel = new Hotel(newHotel);
     const response = await hotel.save();
     res.status(201).json({
       message: "Hotel created successfully",
-      hotel: response,
+      success: true,
     });
   } catch (error) {
     console.error("Error in creating new hotel", error);
-    res.status(500).json({ message: "Failed to create hotel" });
+    res.status(500).json({ message: "Failed to create hotel", success: false });
   }
 };
 
@@ -91,26 +93,30 @@ export const createHotel = async (req, res) => {
 export const updateHotel = async (req, res) => {
   try {
     const hotelId = req.params.id;
-    const updatedData = req.body.hotel;
+    const updatedData = req.body;
     if (!updatedData) {
       return res
         .status(400)
-        .json({ message: "Hotel data is required for update" });
+        .json({ message: "Hotel data is required for update", success: false });
     }
     const hotel = await Hotel.findByIdAndUpdate(hotelId, updatedData, {
       new: true,
       runValidators: true,
     });
     if (!hotel) {
-      return res.status(404).json({ message: "Hotel not found" });
+      return res
+        .status(404)
+        .json({ message: "Hotel not found", success: false });
     }
     res.status(200).json({
       message: "Hotel updated successfully",
-      hotel,
+      success: true,
     });
   } catch (error) {
     console.error("Error updating hotel:", error);
-    res.status(500).json({ message: "Failed to update hotel" });
+    res
+      .status(500)
+      .json({ message: "Failed to update hotel", success: false, error });
   }
 };
 

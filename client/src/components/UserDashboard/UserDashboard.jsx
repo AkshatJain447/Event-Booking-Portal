@@ -6,9 +6,9 @@ import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { setIsDashboard } from "../../store/userAuthSlice";
+import { setIsDashboard, setUser } from "../../store/userAuthSlice";
 
-const BookingCard = ({ hotelData }) => {
+const BookingCard = ({ hotelData, handleRemove }) => {
   const [bookingData, setBookingData] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +32,7 @@ const BookingCard = ({ hotelData }) => {
   }, [hotelData.hotelId]);
 
   const totalAmount =
-    hotelData.type === "room"
+    hotelData.type === "Room"
       ? hotelData.duration * bookingData.room?.gross_price
       : hotelData.duration * bookingData.hall?.gross_price;
 
@@ -70,16 +70,21 @@ const BookingCard = ({ hotelData }) => {
           days
         </p>
         <p className="">
-          <span className="font-semibold">Amount:</span> ₹
-          {totalAmount.toLocaleString("en-IN")}
+          <span className="font-semibold">Amount:</span> ₹{totalAmount}
         </p>
       </div>
 
       {/* Status Badge */}
-      <div className="text-right md:-4">
-        <span className="inline-block bg-green-100 text-green-800 font-medium px-3 py-1 rounded-full">
+      <div className="mt-2 md:mt-0 flex md:flex-col justify-between gap-2">
+        <span className="inline-block bg-green-100 text-green-800 font-medium px-3 py-1 rounded-full text-center">
           ✅ Booked
         </span>
+        <button
+          className="hover:text-red-500 transition-all duration-100 text-gray-600 shadow-md hover:bg-red-100 font-medium px-3 py-1 rounded-full border"
+          onClick={() => handleRemove(hotelData._id)}
+        >
+          Cancel Booking
+        </button>
       </div>
     </motion.div>
   );
@@ -97,6 +102,29 @@ const UserDashboard = () => {
     }
     return () => dispatch(setIsDashboard(false));
   }, []);
+
+  const handleRemove = async (Id) => {
+    try {
+      const response = await fetch(
+        `https://event-booking-portal.onrender.com/api/users/removehotel/${Id}`,
+        // `http://localhost:5000/api/users/removehotel/${Id}`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      dispatch(setUser(data.user));
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      navigate("/userdashboard");
+    }
+  };
 
   return (
     <>
@@ -158,7 +186,11 @@ const UserDashboard = () => {
             )}
             {Array.isArray(user?.bookings) &&
               user.bookings.map((booking) => (
-                <BookingCard key={booking._id} hotelData={booking} />
+                <BookingCard
+                  key={booking._id}
+                  hotelData={booking}
+                  handleRemove={handleRemove}
+                />
               ))}
           </div>
         </motion.div>

@@ -17,7 +17,7 @@ export const getAllOffers = async (req, res) => {
 
 export const createOffer = async (req, res) => {
   try {
-    const newOffer = req.body.offer;
+    const newOffer = req.body;
     const offer = new Offer(newOffer);
     const response = await offer.save();
     res.status(201).json({

@@ -7,7 +7,6 @@ import socialIcon from "../../assets/bar.png";
 import privateIcon from "../../assets/party.png";
 import leisureIcon from "../../assets/travel-agent.png";
 import SearchBar from "../SearchBar/SearchBar";
-import { useDispatch } from "react-redux";
 
 const categories = [
   {
@@ -60,7 +59,6 @@ const Hero = () => {
   const [active, setActive] = useState("Weddings");
   const [acticeComponent, setActiveComponent] = useState(categories[0]);
   const [windowWidth, setWindowWidth] = useState();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setWindowWidth(window.innerWidth);
