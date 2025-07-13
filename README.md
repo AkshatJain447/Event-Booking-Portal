@@ -71,9 +71,9 @@
 
 ## 💡 Project Motivation
 
-Eventease began as a self-learning challenge. I initially enrolled in a paid training program to learn full-stack development, but it turned out to be fraudulent. Determined to grow regardless, I independently studied the MERN stack, and Eventease became my proof-of-work.
+Eventease was built as a part of my hands-on learning journey during a full-stack web development training program. While the course helped me gain foundational understanding of the MERN stack, I wanted to go beyond theoretical concepts and apply what I learned to a real-world project.
 
-This project reflects not just my technical capabilities, but also my resilience and ability to learn complex technologies on my own. Every line of code was written, debugged, and refined from scratch — from backend API design to responsive frontend animations.
+Instead of following a pre-built tutorial, I conceptualized and developed Eventease from the ground up — designing the architecture, implementing both frontend and backend logic, handling authentication, building dashboards, and ensuring responsive design. This project reflects my ability to convert technical knowledge into a functional product with clean UI, modular code, and a good user experience.
 
 ---
 
