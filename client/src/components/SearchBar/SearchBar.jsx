@@ -13,6 +13,7 @@ import { toast } from "react-hot-toast";
 
 const cityMap = {
   "new delhi": "DEL",
+  newdelhi: "DEL",
   delhi: "DEL",
   mumbai: "BOM",
   bangalore: "BLR",
@@ -23,6 +24,7 @@ const cityMap = {
   ahmedabad: "AMD",
   pune: "PNQ",
   jaipur: "JAI",
+  agra: "AGR",
 };
 
 const SearchBar = ({ category }) => {
