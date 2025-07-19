@@ -29,6 +29,7 @@ import room from "../../assets/Room.jpg";
 import hall from "../../assets/hall.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../store/userAuthSlice";
+import { setHallHotel, setRoomHotel } from "../../store/eventSlice";
 
 const Loader = () => {
   return (
@@ -59,6 +60,7 @@ const Loader = () => {
 // Booking modal
 const BookingModal = ({ hotel, type, onClose }) => {
   const [duration, setDuration] = useState(1);
+  const [stayType, setStayType] = useState("regular");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -70,6 +72,17 @@ const BookingModal = ({ hotel, type, onClose }) => {
 
     try {
       setLoading(true);
+
+      if (stayType === "event") {
+        if (type === "room") {
+          dispatch(setRoomHotel(hotel));
+        } else {
+          dispatch(setHallHotel(hotel));
+        }
+        toast.success(`${type} added to event`);
+        onClose();
+        return;
+      }
       const res = await fetch(
         "https://event-booking-portal.onrender.com/api/users/bookhotel",
         // "http://localhost:5000/api/users/bookhotel",
@@ -79,6 +92,7 @@ const BookingModal = ({ hotel, type, onClose }) => {
           credentials: "include",
           body: JSON.stringify({
             hotelId: hotel._id,
+            stayType: stayType,
             duration: Number(duration),
             type: type === "room" ? "Room" : "Hall",
           }),
@@ -149,6 +163,43 @@ const BookingModal = ({ hotel, type, onClose }) => {
           max={10}
           className=" border border-gray-300 px-3 py-1 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
+      </div>
+      <div className="flex gap-4 justify-around items-center mt-2">
+        <label
+          className={`flex items-center gap-2 cursor-pointer px-3 py-1 rounded-full shadow-md transition-all duration-200 ${
+            stayType === "regular"
+              ? "bg-accent3 text-white"
+              : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+          }`}
+        >
+          <input
+            type="radio"
+            name="stayType"
+            value="regular"
+            checked={stayType === "regular"}
+            onChange={() => setStayType("regular")}
+            className="hidden"
+          />
+          <span className="font-medium">Regular Stay</span>
+        </label>
+
+        <label
+          className={`flex items-center gap-2 cursor-pointer px-3 py-1 rounded-full shadow-md transition-all duration-200 ${
+            stayType === "event"
+              ? "bg-accent3 text-white"
+              : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+          }`}
+        >
+          <input
+            type="radio"
+            name="stayType"
+            value="event"
+            checked={stayType === "event"}
+            onChange={() => setStayType("event")}
+            className="hidden"
+          />
+          <span className="font-medium">Event Stay</span>
+        </label>
       </div>
 
       <div className="flex flex-row justify-between text-lg font-semibold mb-3 mt-2 border-t pt-2">

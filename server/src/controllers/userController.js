@@ -1,8 +1,9 @@
 import User from "../models/User.js";
 import Hotel from "../models/Hotel.js";
+import Event from "../models/Event.js";
 
 export const bookHotel = async (req, res) => {
-  const { hotelId, duration, type } = req.body;
+  const { hotelId, duration, type, stayType } = req.body;
 
   // Accessing user from req.user set by middleware
   const userId = req.user.id;
@@ -16,6 +17,10 @@ export const bookHotel = async (req, res) => {
   const bookingData = { hotelId, duration, type };
 
   try {
+    if (stayType !== "regular") {
+      return res.status(400).json({ message: "Invalid Request" });
+    }
+
     const updatedUser = await User.findByIdAndUpdate(
       userId,
       { $push: { bookings: bookingData } },
@@ -28,13 +33,11 @@ export const bookHotel = async (req, res) => {
         .json({ message: "User not found", success: false });
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Hotel booked successfully",
-        user: updatedUser,
-        success: true,
-      });
+    res.status(200).json({
+      message: "Hotel booked successfully",
+      user: updatedUser,
+      success: true,
+    });
   } catch (error) {
     console.error("Booking Error:", error);
     res.status(500).json({ message: "Internal server error", success: false });

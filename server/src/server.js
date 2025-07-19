@@ -10,6 +10,7 @@ import contactRouter from "./routes/contactRoute.js";
 import authRouter from "./routes/authRoute.js";
 import userRouter from "./routes/userRoute.js";
 import adminRouter from "./routes/adminRoute.js";
+import eventRouter from "./routes/eventRoute.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -31,6 +32,7 @@ app.use("/api/admin", adminRouter);
 app.use("/api/users", userRouter);
 app.use("/api/offers", offerRouter);
 app.use("/api/hotels", hotelRouter);
+app.use("/api/events", eventRouter);
 app.use("/api/contactUs", contactRouter);
 
 connectDB().then(() => {

@@ -2,47 +2,32 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      max: 100,
-    },
-    email: {
-      type: String,
-      required: true,
-      max: 100,
-      unique: 1,
-    },
-    role: {
-      type: String,
-      required: true,
-      max: 6,
-    },
-    password: {
-      type: String,
-      required: true,
-      max: 1024,
+    name: { type: String, required: true, max: 100 },
+    email: { type: String, required: true, unique: true, max: 100 },
+    role: { type: String, required: true },
+    password: { type: String, required: true },
+    event: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Event",
+      default: null,
     },
     bookings: [
       {
         hotelId: {
           type: mongoose.Schema.Types.ObjectId,
-          required: true,
+          default: null,
+        },
+        checkInDate: {
+          type: String,
         },
         duration: {
           type: Number,
-          required: true,
-        },
-        type: {
-          type: String,
-          required: true,
+          min: 1,
         },
       },
     ],
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 const User = mongoose.model("User", userSchema);

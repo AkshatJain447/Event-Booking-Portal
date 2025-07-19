@@ -7,94 +7,146 @@ import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { setIsDashboard, setUser } from "../../store/userAuthSlice";
+import { setIsEvent } from "../../store/eventSlice";
+import Event from "./Event";
 
-const BookingCard = ({ hotelData, handleRemove }) => {
+const BookingCard = ({ user, handleRemove }) => {
   const [bookingData, setBookingData] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAllBookings = async () => {
       try {
-        const response = await fetch(
-          `https://event-booking-portal.onrender.com/api/users/findhotel/${hotelData.hotelId}`
-          // `http://localhost:5000/api/users/findhotel/${hotelData.hotelId}`,
+        const promises = user.bookings.map((booking) =>
+          fetch(
+            `https://event-booking-portal.onrender.com/api/users/findhotel/${booking.hotelId}`
+            // `http://localhost:5000/api/users/findhotel/${booking.hotelId}`
+          ).then((res) => res.json())
         );
-        const data = await response.json();
-        setBookingData(data.hotelData);
+
+        const results = await Promise.all(promises);
+
+        const hotelMap = {};
+        results.forEach((res, index) => {
+          const hotelId = user.bookings[index].hotelId;
+          hotelMap[hotelId] = res.hotelData;
+        });
+
+        setBookingData(hotelMap);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         toast.error("Failed to fetch booking data");
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
-  }, [hotelData.hotelId]);
 
-  const totalAmount =
-    hotelData.type === "Room"
-      ? hotelData.duration * bookingData.room?.gross_price
-      : hotelData.duration * bookingData.hall?.gross_price;
+    if (user.bookings?.length > 0) {
+      fetchAllBookings();
+    } else {
+      setLoading(false);
+    }
+  }, [user.bookings]);
 
-  return loading ? (
-    <div className="my-4 bg-gray-50 border border-gray-200 rounded-xl shadow-md p-4">
-      <p className="animate-pulse duration-75 transition-all text-center">
-        Fetching User Bookings...
-      </p>
-    </div>
-  ) : (
+  if (loading) {
+    return (
+      <div className="my-4 bg-gray-50 border border-gray-200 rounded-xl shadow-md p-4">
+        <p className="animate-pulse duration-75 transition-all text-center">
+          Fetching User Bookings...
+        </p>
+      </div>
+    );
+  }
+
+  if (!user.bookings || user.bookings.length === 0) {
+    return (
+      <div className="text-xl text-center my-10 text-gray-500">
+        You haven’t booked anything yet. Start planning your perfect event
+        today!
+      </div>
+    );
+  }
+
+  return (
     <motion.div
-      initial={{ opacity: 0, translateX: 60 }}
-      animate={{ opacity: 1, translateX: 0 }}
+      initial={{ opacity: 0, translateY: 60 }}
+      animate={{ opacity: 1, translateY: 0 }}
       transition={{ duration: 0.4, ease: "backOut" }}
-      className="my-4 bg-gray-50 border border-gray-200 rounded-xl shadow-md p-4 flex flex-col md:flex-row flex-wrap justify-evenly md:items-center hover:shadow-lg transition-shadow duration-300"
+      className="bg-white rounded-xl shadow-xl py-3 px-6"
     >
-      {/* Hotel Info */}
-      <div className="flex-1 pr-4">
-        <h4 className="text-xl font-bold text-accent3">
-          {bookingData.hotel_name}
-        </h4>
-        <p className="text-gray-500 flex items-center text-sm mt-1">
-          <FaLocationDot className="mr-1" />
-          {bookingData.address}
-        </p>
-      </div>
+      <motion.h4
+        initial={{ opacity: 0, translateX: 60 }}
+        animate={{ opacity: 1, translateX: 0 }}
+        transition={{ duration: 0.4, ease: "backOut" }}
+        className="font-semibold text-lg text-gray-600 flex items-center gap-1 border-b pb-2"
+      >
+        <IoMdBookmarks className="text-xl" />
+        Your Booked Stays
+      </motion.h4>
 
-      {/* Booking Details */}
-      <div className="flex-1 text-sm text-gray-600 md:ml-6">
-        <p>
-          <span className="font-semibold">Type:</span> {hotelData.type}
-        </p>
-        <p>
-          <span className="font-semibold">Duration:</span> {hotelData.duration}{" "}
-          days
-        </p>
-        <p className="">
-          <span className="font-semibold">Amount:</span> ₹{totalAmount}
-        </p>
-      </div>
+      {user.bookings.map((booking) => {
+        const hotel = bookingData[booking.hotelId];
+        if (!hotel) return null;
 
-      {/* Status Badge */}
-      <div className="mt-2 md:mt-0 flex md:flex-col justify-between gap-2">
-        <span className="inline-block bg-green-100 text-green-800 font-medium px-3 py-1 rounded-full text-center">
-          ✅ Booked
-        </span>
-        <button
-          className="hover:text-red-500 transition-all duration-100 text-gray-600 shadow-md hover:bg-red-100 font-medium px-3 py-1 rounded-full border"
-          onClick={() => handleRemove(hotelData._id)}
-        >
-          Cancel Booking
-        </button>
-      </div>
+        const totalAmount = booking.duration * (hotel?.room?.gross_price || 0);
+
+        return (
+          <motion.div
+            key={booking.hotelId}
+            initial={{ opacity: 0, translateX: 60 }}
+            animate={{ opacity: 1, translateX: 0 }}
+            transition={{ duration: 0.4, ease: "backOut" }}
+            className="my-4 bg-gray-50 border border-gray-200 rounded-xl shadow-md p-4 flex flex-col md:flex-row flex-wrap justify-evenly md:items-center hover:shadow-lg transition-shadow duration-300"
+          >
+            {/* Hotel Info */}
+            <div className="flex-1 pr-4">
+              <h4 className="text-xl font-bold text-accent3">
+                {hotel?.hotel_name}
+              </h4>
+              <p className="text-gray-500 flex items-center text-sm mt-1">
+                <FaLocationDot className="mr-1" />
+                {hotel?.address}
+              </p>
+            </div>
+
+            {/* Booking Details */}
+            <div className="flex-1 text-sm text-gray-600 md:ml-6">
+              <p>
+                <span className="font-semibold">Type:</span> Room
+              </p>
+              <p>
+                <span className="font-semibold">Duration:</span>{" "}
+                {booking.duration} days
+              </p>
+              <p>
+                <span className="font-semibold">Amount:</span> ₹{totalAmount}
+              </p>
+            </div>
+
+            {/* Status + Action */}
+            <div className="mt-2 md:mt-0 flex md:flex-col justify-between gap-2">
+              <span className="inline-block bg-green-100 text-green-800 font-medium px-3 py-1 rounded-full text-center">
+                ✅ Booked
+              </span>
+              <button
+                className="hover:text-red-500 transition-all duration-100 text-gray-600 shadow-md hover:bg-red-100 font-medium px-3 py-1 rounded-full border"
+                onClick={() => handleRemove(booking.hotelId)}
+              >
+                Cancel Booking
+              </button>
+            </div>
+          </motion.div>
+        );
+      })}
     </motion.div>
   );
 };
 
 const UserDashboard = () => {
   const user = useSelector((state) => state.user.user);
+  const isEvent = useSelector((state) => state.event.isEvent);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(setIsDashboard(true));
     if (!user?.name) {
@@ -162,38 +214,25 @@ const UserDashboard = () => {
             </p>
           </motion.div>
         </motion.div>
-        <motion.div
-          initial={{ opacity: 0, translateY: 60 }}
-          animate={{ opacity: 1, translateY: 0 }}
-          transition={{ duration: 0.4, ease: "backOut" }}
-          className="bg-white rounded-xl shadow-xl py-3 px-6"
+        <div
+          className="mb-3 mr-1 flex items-center gap-1 justify-end text-gray-600 hover:text-black cursor-pointer"
+          onClick={() => {
+            dispatch(setIsEvent(!isEvent));
+          }}
         >
-          <motion.h4
-            initial={{ opacity: 0, translateX: 60 }}
-            animate={{ opacity: 1, translateX: 0 }}
-            transition={{ duration: 0.4, ease: "backOut" }}
-            className="font-semibold text-lg text-gray-600 flex items-center gap-1 border-b pb-2"
-          >
-            <IoMdBookmarks className="text-xl" />
-            Your Booked Stays
-          </motion.h4>
-          <div>
-            {user.bookings?.length === 0 && (
-              <div className="text-xl text-center my-10 text-gray-500">
-                You haven’t booked anything yet. Start planning your perfect
-                event today!
-              </div>
-            )}
-            {Array.isArray(user?.bookings) &&
-              user.bookings.map((booking) => (
-                <BookingCard
-                  key={booking._id}
-                  hotelData={booking}
-                  handleRemove={handleRemove}
-                />
-              ))}
-          </div>
-        </motion.div>
+          <input type="checkbox" id="isEvent" checked={isEvent} />
+          <p className="w-3/4 text-right md:w-auto">
+            {user.event
+              ? "You already have an event – View or manage it?"
+              : "Planning an event? Check this box to get started"}
+          </p>
+        </div>
+
+        {user.event && isEvent ? (
+          <Event />
+        ) : (
+          <BookingCard user={user} handleRemove={handleRemove} />
+        )}
       </div>
     </>
   );

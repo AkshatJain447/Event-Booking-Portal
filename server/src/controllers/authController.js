@@ -44,6 +44,7 @@ export const registerController = async (req, res) => {
       email: email,
       role: "user",
       password: hashedPassword,
+      isEvent: false,
     });
 
     if (!newUser) {
@@ -105,6 +106,8 @@ export const loginController = async (req, res) => {
       email: isUser.email,
       role: isUser.role,
       bookings: isUser.bookings,
+      event: isUser.event,
+      isEvent: isUser.isEvent,
     };
     res.status(200).json({ message: "User loggedIn", success: true, userData });
   } catch (error) {
