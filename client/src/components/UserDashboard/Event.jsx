@@ -90,6 +90,7 @@ const Event = () => {
   } = useSelector((state) => state.event);
   const dispatch = useDispatch();
 
+  // get data from backend
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -119,6 +120,48 @@ const Event = () => {
     fetchData();
   }, []);
 
+  // save data to localstorage
+  useEffect(() => {
+    const eventData = {
+      name,
+      date,
+      duration,
+      catererVendor,
+      decoratorVendor,
+      djVendor,
+      roomHotel,
+      hallHotel,
+    };
+    localStorage.setItem("eventData", JSON.stringify(eventData));
+  }, [
+    name,
+    date,
+    duration,
+    catererVendor,
+    decoratorVendor,
+    djVendor,
+    roomHotel,
+    hallHotel,
+  ]);
+
+  // get data from localstorage
+  useEffect(() => {
+    const saved = localStorage.getItem("eventData");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+
+      dispatch(setName(parsed.name));
+      dispatch(setDate(parsed.date));
+      dispatch(setDuration(parsed.duration));
+      dispatch(setCatererVendor(parsed.catererVendor));
+      dispatch(setDecoratorVendor(parsed.decoratorVendor));
+      dispatch(setDJVendor(parsed.djVendor));
+      dispatch(setRoomHotel(parsed.roomHotel));
+      dispatch(setHallHotel(parsed.hallHotel));
+    }
+  }, []);
+
+  // dynamically setting the total price
   useEffect(() => {
     const catererPrice = catererVendor?.price || 0;
     const decoratorPrice = decoratorVendor?.price || 0;
@@ -204,6 +247,7 @@ const Event = () => {
     dispatch(setRoomHotel(null));
     dispatch(setHallHotel(null));
     dispatch(setTotalPrice(0));
+    localStorage.removeItem("eventData");
     toast.success("Data is cleared");
   };
 
@@ -241,7 +285,7 @@ const Event = () => {
               type="date"
               value={date}
               className="w-full border rounded-md px-3 py-2 focus:border-accent3 focus:ring focus:ring-accent1/40 text-primaryText"
-              onChange={(e) => dispatch(setDate(Date(e.target.value)))}
+              onChange={(e) => dispatch(setDate(e.target.value))}
             />
           </div>
 

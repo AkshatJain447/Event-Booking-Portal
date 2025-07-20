@@ -369,7 +369,7 @@ const HotelContent = ({ hotel }) => {
           <img
             src={room}
             alt="Room Image"
-            className="h-[280px] md:rounded-l-xl"
+            className="h-36 w-[85%] mt-4 rounded-md md:mt-auto md:rounded-none md:w-auto md:h-[280px] md:rounded-l-xl"
             loading="lazy"
           />
           <div className="border-l px-2 pr-4">
@@ -441,7 +441,7 @@ const HotelContent = ({ hotel }) => {
             <img
               src={hall}
               alt="Hall image"
-              className="h-[280px] md:rounded-l-xl"
+              className="h-36 w-[85%] mt-4 rounded-md md:mt-auto md:rounded-none md:w-auto md:h-[280px] md:rounded-l-xl"
               loading="lazy"
             />
             <div className="border-l px-2 pr-4">
