@@ -27,16 +27,16 @@ Built completely from scratch, Eventease demonstrates advanced expertise in full
 ## 🏞️ Screenshots
 
 ### 🏠 Homepage  
-![Homepage Screenshot](https://github.com/user-attachments/assets/1a85e945-8294-4b1e-b99b-8f1e35fd 
+![Homepage Screenshot](https://github.com/user-attachments/assets/1a85e945-8294-4b1e-b99b-8f1e35fd1402) 
 
 Dashboard  
-![User Dashboard Screenshot](https://github.com/user-attachments/assets/9d981278-24dc-49d2-b58a-c21e 
+![User Dashboard Screenshot](https://github.com/user-attachments/assets/9d981278-24dc-49d2-b58a-c21e57d16984) 
 
 Single Hotel View  
-![Single Hotel Screenshot](https://github.com/user-attachments/assets/2446bf56-82ee-4117-bdef-24df 
+![Single Hotel Screenshot](https://github.com/user-attachments/assets/2446bf56-82ee-4117-bdef-24df864eab0e) 
 
 Hotel List Page  
-![Hotel List Screenshot](https://github.com/user-attachments/assets/025dcd21-4aac-494f-a5e2-04c 
+![Hotel List Screenshot](https://github.com/user-attachments/assets/025dcd21-4aac-494f-a5e2-04c6f903b3fa) 
 
 Core Features at a Glance
 - 🛡️ **Secure Auth**: JWT authentication (1-hour expiry), bcrypt-hashed passwords, role-based access.
@@ -82,7 +82,7 @@ Core Features at a Glance
 MERN Stack Developer | CSE Graduate
 
 - [LinkedIn](https://www.linkedin.com/in/akshat-jain-b016391a6/)  
-- 📬 codingknights447@gmail.com
+- 📬 codingknights447@gmail.com | akjain9758@gmail.com
 
 *Always learning, building, and pushing for full-stack excellence.*
 
