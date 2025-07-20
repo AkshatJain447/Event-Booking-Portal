@@ -29,13 +29,13 @@ Built completely from scratch, Eventease demonstrates advanced expertise in full
 ### 🏠 Homepage  
 ![Homepage Screenshot](https://github.com/user-attachments/assets/1a85e945-8294-4b1e-b99b-8f1e35fd1402) 
 
-Dashboard  
+### 👤 User Dashboard  
 ![User Dashboard Screenshot](https://github.com/user-attachments/assets/9d981278-24dc-49d2-b58a-c21e57d16984) 
 
-Single Hotel View  
+### 🏨 Single Hotel View  
 ![Single Hotel Screenshot](https://github.com/user-attachments/assets/2446bf56-82ee-4117-bdef-24df864eab0e) 
 
-Hotel List Page  
+### 📋 Hotel List Page  
 ![Hotel List Screenshot](https://github.com/user-attachments/assets/025dcd21-4aac-494f-a5e2-04c6f903b3fa) 
 
 Core Features at a Glance
