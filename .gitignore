@@ -26,6 +26,7 @@ dist-ssr
 # server
 indian_hotels_data.json
 agra_hotels_dataset.json
+eventease_udaipur_hotels.json
 offers.json
 seeder.js
 .env

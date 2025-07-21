@@ -25,6 +25,7 @@ const cityMap = {
   pune: "PNQ",
   jaipur: "JAI",
   agra: "AGR",
+  udaipur: "UDA",
 };
 
 const SearchBar = ({ category }) => {
