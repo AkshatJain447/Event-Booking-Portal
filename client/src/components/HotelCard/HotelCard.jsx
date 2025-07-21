@@ -68,7 +68,7 @@ const HotelCard = ({ hotel }) => {
         <img
           src={hotel.main_photo_url}
           alt="Hotel"
-          className="h-[250px] min-w-[90vw] md:min-w-fit w-full object-cover rounded-lg"
+          className="h-[250px] min-w-[90vw] md:min-w-[400px] lg:min-w-[375px] w-full object-cover rounded-lg"
         />
         <div className="flex justify-between items-center px-2 py-2 text-sm">
           {/* Rating + Review */}
