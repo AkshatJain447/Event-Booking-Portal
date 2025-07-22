@@ -26,6 +26,7 @@ const cityMap = {
   jaipur: "JAI",
   agra: "AGR",
   udaipur: "UDA",
+  varanasi: "VAR",
 };
 
 const SearchBar = ({ category }) => {
