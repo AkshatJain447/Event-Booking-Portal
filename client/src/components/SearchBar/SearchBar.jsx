@@ -27,6 +27,7 @@ const cityMap = {
   agra: "AGR",
   udaipur: "UDA",
   varanasi: "VAR",
+  shimla: "SHL",
 };
 
 const SearchBar = ({ category }) => {
