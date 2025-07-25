@@ -28,6 +28,7 @@ const cityMap = {
   udaipur: "UDA",
   varanasi: "VAR",
   shimla: "SHL",
+  rishikesh: "RIS",
 };
 
 const SearchBar = ({ category }) => {
@@ -55,7 +56,8 @@ const SearchBar = ({ category }) => {
       return;
     }
     const cityCode =
-      cityMap[searchQuery.location.toLowerCase()] || searchQuery.location;
+      cityMap[searchQuery.location.toLowerCase().trim()] ||
+      searchQuery.location;
     const type = category.roomType !== "Rooms" ? "hall" : "room";
 
     // API request for hotels and seting storesearchquery

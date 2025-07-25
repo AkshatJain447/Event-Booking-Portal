@@ -29,6 +29,7 @@ agra_hotels_dataset.json
 eventease_udaipur_hotels.json
 varanasi_hotels.json
 shimla_hotels.json
+rishikesh_hotels.json
 offers.json
 seeder.js
 .env
