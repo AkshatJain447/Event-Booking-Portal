@@ -29,6 +29,7 @@ const cityMap = {
   varanasi: "VAR",
   shimla: "SHL",
   rishikesh: "RIS",
+  manali: "MNL",
 };
 
 const SearchBar = ({ category }) => {
@@ -163,6 +164,7 @@ const SearchBar = ({ category }) => {
           <input
             type="number"
             name="rooms"
+            min={0}
             placeholder="0"
             className=" border md:border-r-0 lg:border-y border-black p-1 md:p-4 font-bold text-2xl lg:w-36 md:h-16 rounded-r-lg md:rounded-r-none rounded-l-lg lg:rounded-none"
             onChange={(e) =>
@@ -179,6 +181,7 @@ const SearchBar = ({ category }) => {
           <input
             type="number"
             name="guests"
+            min={0}
             placeholder="0"
             className="border border-black rounded-l-lg md:rounded-l-none rounded-r-lg p-1 md:p-4 font-bold text-2xl lg:w-36 md:h-16"
             onChange={(e) =>

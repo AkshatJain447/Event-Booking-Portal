@@ -30,6 +30,8 @@ eventease_udaipur_hotels.json
 varanasi_hotels.json
 shimla_hotels.json
 rishikesh_hotels.json
+kolkata_hotels.json
+manali_hotels.json
 offers.json
 seeder.js
 .env
