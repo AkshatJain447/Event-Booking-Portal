@@ -5,7 +5,10 @@ import enrichHotelWithImage from "../utils/fetchImage.js";
 export const getAllHotels = async (req, res) => {
   try {
     const hotels = await Hotel.find();
-    res.status(200).json({ message: "Hotels fetched successfully", hotels });
+    res.status(200).json({
+      message: "Hotels fetched successfully",
+      hotels,
+    });
   } catch (error) {
     console.error("Error fetching hotels:", error);
     res.status(500).json({ message: "Failed to fetch hotels" });

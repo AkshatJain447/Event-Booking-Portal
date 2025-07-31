@@ -10,27 +10,7 @@ import {
   setStoreSearchQuery,
 } from "../../store/hotelSlice";
 import { toast } from "react-hot-toast";
-
-const cityMap = {
-  "new delhi": "DEL",
-  newdelhi: "DEL",
-  delhi: "DEL",
-  mumbai: "BOM",
-  bangalore: "BLR",
-  hyderabad: "HYD",
-  chennai: "MAA",
-  kolkata: "CCU",
-  goa: "GOI",
-  ahmedabad: "AMD",
-  pune: "PNQ",
-  jaipur: "JAI",
-  agra: "AGR",
-  udaipur: "UDA",
-  varanasi: "VAR",
-  shimla: "SHL",
-  rishikesh: "RIS",
-  manali: "MNL",
-};
+import { cityMap } from "./cityMap";
 
 const SearchBar = ({ category }) => {
   const [searchQuery, setSearchQuery] = useState({
