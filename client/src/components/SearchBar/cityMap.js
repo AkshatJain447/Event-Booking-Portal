@@ -19,6 +19,9 @@ export const cityMap = {
   manali: "MNL",
   chandigarh: "IXC",
   jodhpur: "JDH",
+  nainital: "NAN",
+  madurai: "IXM",
+  amritsar: "ATQ",
 };
 
 // Jaisalmer: "JSA" (Desert festivals, heritage stays)

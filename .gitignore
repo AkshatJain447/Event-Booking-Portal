@@ -34,6 +34,9 @@ kolkata_hotels.json
 manali_hotels.json
 jodhpur_hotels.json
 chandigarh_hotels.json
+amritsar_hotels.json
+madurai_hotels.json
+nainital_hotels.json
 offers.json
 seeder.js
 .env
