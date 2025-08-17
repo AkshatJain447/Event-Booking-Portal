@@ -37,6 +37,9 @@ chandigarh_hotels.json
 amritsar_hotels.json
 madurai_hotels.json
 nainital_hotels.json
+ooty_hotels.json
+surat_hotels.json
+tirupati_hotels.json
 offers.json
 seeder.js
 .env

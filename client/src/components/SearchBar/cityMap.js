@@ -22,6 +22,9 @@ export const cityMap = {
   nainital: "NAN",
   madurai: "IXM",
   amritsar: "ATQ",
+  ooty: "OOT",
+  surat: "STV",
+  tirupati: "TIR",
 };
 
 // Jaisalmer: "JSA" (Desert festivals, heritage stays)
