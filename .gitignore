@@ -40,6 +40,9 @@ nainital_hotels.json
 ooty_hotels.json
 surat_hotels.json
 tirupati_hotels.json
+darjeeling_hotels.json
+lucknow_hotels.json
+kochi_hotels.json
 offers.json
 seeder.js
 .env

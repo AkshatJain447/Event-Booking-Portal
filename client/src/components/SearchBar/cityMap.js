@@ -25,6 +25,9 @@ export const cityMap = {
   ooty: "OOT",
   surat: "STV",
   tirupati: "TIR",
+  lucknow: "LKO",
+  darjeeling: "DAJ",
+  kochi: "COK",
 };
 
 // Jaisalmer: "JSA" (Desert festivals, heritage stays)
