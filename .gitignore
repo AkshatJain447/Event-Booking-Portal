@@ -43,6 +43,9 @@ tirupati_hotels.json
 darjeeling_hotels.json
 lucknow_hotels.json
 kochi_hotels.json
+haridwar_hotels.json
+mysore_hotels.json
+pondicherry_hotels.json
 offers.json
 seeder.js
 .env

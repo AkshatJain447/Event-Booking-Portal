@@ -28,6 +28,9 @@ export const cityMap = {
   lucknow: "LKO",
   darjeeling: "DAJ",
   kochi: "COK",
+  mysore: "MYQ",
+  haridwar: "HWU",
+  pondicherry: "PNY",
 };
 
 // Jaisalmer: "JSA" (Desert festivals, heritage stays)
