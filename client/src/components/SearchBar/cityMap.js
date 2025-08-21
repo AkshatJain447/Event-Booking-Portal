@@ -31,6 +31,9 @@ export const cityMap = {
   mysore: "MYQ",
   haridwar: "HWU",
   pondicherry: "PNY",
+  jaisalmer: "JSA",
+  indore: "IDR",
+  mussoorie: "MUS",
 };
 
 // Jaisalmer: "JSA" (Desert festivals, heritage stays)
