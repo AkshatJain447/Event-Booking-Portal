@@ -34,6 +34,9 @@ export const cityMap = {
   jaisalmer: "JSA",
   indore: "IDR",
   mussoorie: "MUS",
+  srinagar: "SXR",
+  bhopal: "BHO",
+  puri: "PUR"
 };
 
 // Jaisalmer: "JSA" (Desert festivals, heritage stays)
